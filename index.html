@@ -1,746 +1,1672 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-bs-theme="dark">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CineFlow · Cinema</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-<style>
-/* Fallback autocontido: garante o layout mesmo se o CDN do Bootstrap estiver bloqueado */
-:root{--bg:#0b0d12;--card:#161a23;--line:#2a3142;--red:#e50914;--gold:#f5c518;--txt:#f8f9fa;--mut:#9aa3b5;--av:#2e7d4f;--occ:#3a3f4b}
-*{box-sizing:border-box}
-html,body{margin:0;padding:0}
-body{background:var(--bg);color:var(--txt);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:100vh;-webkit-font-smoothing:antialiased}
-a{color:inherit}
-h1,h2,h3{margin:0 0 8px;line-height:1.2;color:var(--txt)}
-h1{font-size:2rem;font-weight:800}
-h2{font-size:1.5rem;font-weight:800}
-h3{font-size:1.1rem}
-p{margin:0 0 8px}
-code{background:#0f121a;padding:2px 6px;border-radius:6px}
-.gold{color:var(--gold)}
-.mut{color:var(--mut)}
-.small{font-size:.85rem}
-.sm{font-size:.95rem}
-.bold{font-weight:700;margin:4px 0 12px}
-.center{text-align:center}
-.mt{margin-top:16px}
-.full{width:100%}
-.wrap{max-width:1200px;margin:0 auto;padding:24px 16px 120px}
-.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:12px 16px;max-width:1200px;margin:0 auto}
-.row-between{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-header.top{position:sticky;top:0;z-index:50;background:#000;border-bottom:2px solid var(--red)}
-.brand{font-weight:800;font-size:1.3rem;text-decoration:none;color:var(--txt)}
-.brand span{color:var(--gold)}
-header nav{display:flex;align-items:center;flex-wrap:wrap;gap:4px}
-header nav a,header nav button.link{color:var(--txt);text-decoration:none;padding:6px 10px;border-radius:8px;opacity:.85;background:none;border:0;font:inherit;cursor:pointer}
-header nav a:hover,header nav button.link:hover{opacity:1;background:#14171f}
-header nav a.on{color:var(--gold);opacity:1}
-.who{color:var(--gold);margin:0 6px;font-size:.9rem}
-.badge-master{background:var(--red);color:#fff;border-radius:999px;padding:4px 10px;font-size:.8rem;font-weight:700;margin:0 4px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:20px}
-.kpis{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
-.kpi .v{font-size:1.9rem;font-weight:800;margin-top:6px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;overflow:hidden}
-.card.movie{padding:0}
-.card.movie .body{padding:14px;display:flex;flex-direction:column;gap:6px}
-.poster{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:#222}
-.rating{border:1px solid var(--mut);border-radius:6px;padding:0 6px;font-size:.8rem;color:var(--mut);white-space:nowrap}
-.chip{display:inline-block;margin:4px 4px 0 0;padding:6px 10px;border:1px solid var(--gold);color:var(--gold);border-radius:999px;text-decoration:none;font-size:.85rem}
-.chip:hover{background:var(--gold);color:#000}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:10px;padding:10px 16px;font:inherit;font-weight:600;cursor:pointer;background:#222;color:var(--txt);text-decoration:none;margin-top:6px}
-.btn:hover{filter:brightness(1.1)}
-.btn-red{background:var(--red);color:#fff}
-.btn-gold{background:var(--gold);color:#000}
-.btn-ghost{background:transparent;border:1px solid var(--line)}
-.btn-del{background:#3b0d10;color:#ff8a8a}
-.btn-sm{padding:6px 10px;font-size:.85rem}
-.btn.dis{opacity:.4;pointer-events:none}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
-.stack{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-input,select,textarea{background:#0f121a;color:var(--txt);border:1px solid var(--line);border-radius:8px;padding:9px 10px;font:inherit;width:100%;color-scheme:dark}
-input[type=checkbox]{width:auto}
-input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);outline-offset:0}
-label{display:block;font-size:.85rem;color:var(--mut);margin-bottom:4px}
-label.chk,label.radio{display:flex;align-items:center;gap:8px;color:var(--txt);font-size:1rem;margin:8px 0;cursor:pointer}
-.field{margin-bottom:12px;flex:1 1 150px}
-.row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;--bs-gutter-x:0;--bs-gutter-y:0;margin:0}
-.row>*{width:auto;flex-shrink:1;max-width:none}
-.two{display:grid;grid-template-columns:1fr;gap:20px}
-@media(min-width:900px){.two{grid-template-columns:2fr 1fr}}
-.scroll{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-th,td{text-align:left;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
-th{color:var(--mut);font-weight:600;font-size:.85rem}
-td.r{text-align:right;white-space:nowrap}
-td input{padding:6px 8px}
-td input[type=checkbox]{width:auto}
-.sumline{display:flex;justify-content:space-between;gap:10px;margin:6px 0}
-.sumline.big{font-size:1.3rem;font-weight:800}
-hr{border:0;border-top:1px solid var(--line);margin:14px 0}
-.screen{width:70%;height:12px;margin:0 auto 6px;background:linear-gradient(var(--gold),transparent);border-radius:50% 50% 0 0/100% 100% 0 0;box-shadow:0 -6px 28px rgba(245,197,24,.45)}
-.screen-lbl{letter-spacing:.4em;font-size:.7rem;color:var(--mut);text-align:center;margin-bottom:14px}
-.seatwrap{overflow-x:auto;padding-bottom:8px}
-.seat-row{display:flex;justify-content:center;align-items:center;margin:2px auto;min-width:max-content}
-.lbl{width:22px;text-align:center;color:var(--mut);font-size:.8rem;font-weight:700}
-.aisle{width:18px;flex:0 0 18px}
-.seat{width:30px;height:27px;margin:2px;border:0;border-radius:7px 7px 3px 3px;background:var(--av);color:#fff;font:600 .6rem system-ui;cursor:pointer;padding:0}
-.seat:hover:not(:disabled){filter:brightness(1.25)}
-.seat.sel{background:var(--gold);color:#000;font-weight:800}
-.seat.occ{background:var(--occ);opacity:.5;cursor:not-allowed}
-.legend{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin-top:18px;font-size:.85rem;color:var(--mut)}
-.dot{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:middle}
-.tag{display:inline-block;font-size:.75rem;color:var(--mut);border:1px solid var(--line);border-radius:6px;padding:0 6px;align-self:flex-start}
-.ico{font-size:2.6rem;text-align:center;padding:8px 0}
-.qty{display:flex;align-items:center;gap:8px}
-.qty span{min-width:22px;text-align:center;font-weight:700}
-.ticket{background:linear-gradient(135deg,#1c212d,#0f121a);border:2px dashed var(--gold);border-radius:16px;padding:20px;max-width:560px;margin:0 auto}
-.ticket.mini{padding:12px;margin:0 0 12px;max-width:none}
-.code{display:inline-block;background:var(--gold);color:#000;font-weight:800;letter-spacing:.2em;padding:8px 18px;border-radius:8px;margin:10px 0}
-.qr{width:120px;height:120px;margin:12px auto;border:6px solid #fff;border-radius:6px;background:repeating-linear-gradient(90deg,#000 0 6px,#fff 6px 12px),repeating-linear-gradient(0deg,#000 0 6px,transparent 6px 12px);background-blend-mode:multiply;opacity:.9}
-.bottom{position:fixed;left:0;right:0;bottom:0;background:#000;border-top:2px solid var(--red);padding:12px 16px;z-index:40}
-.bottom .in{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.ov{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
-.modal{background:var(--card);border:1px solid var(--line);border-radius:14px;max-width:520px;width:100%;max-height:85vh;overflow:auto;padding:20px}
-.modal .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
-.ord{background:#0f121a;border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:10px}
-.toasts{position:fixed;right:16px;bottom:16px;display:grid;gap:8px;z-index:200;max-width:340px}
-.toast{background:#1d2330;border-left:4px solid var(--gold);padding:10px 14px;border-radius:8px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
-.toast.danger{border-color:var(--red)}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CINE UNEX</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <style>
+    /* ===== Paleta cinema ===== */
+    html[data-bs-theme="dark"] {
+      --bs-body-bg: #0b0d12;
+      --bs-body-color: #f8f9fa;
+      --bs-tertiary-bg: #161a23;
+      --bs-secondary-bg: #1c2130;
+      --bs-card-bg: #161a23;
+      --bs-card-border-color: #252a37;
+      --bs-border-color: #252a37;
+      --bs-secondary-color: #9aa3b5;
+      --bs-danger: #e50914;
+      --bs-warning: #f5c518;
+      --bs-danger-rgb: 229, 9, 20;
+      --bs-warning-rgb: 245, 197, 24;
+    }
+    :root {
+      --cinema-fundo: #0b0d12;
+      --cinema-cartao: #161a23;
+      --cinema-borda: #252a37;
+      --cinema-vermelho: #e50914;
+      --cinema-dourado: #f5c518;
+    }
 
-/* Tela de login */
-.login-wrap{min-height:calc(100vh - 80px);display:flex;align-items:center;justify-content:center;padding:24px 16px}
-.login-card{width:100%;max-width:420px;padding:28px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
-.brandmark{font-size:2.6rem;text-align:center}
-.seg{display:grid;grid-template-columns:1fr 1fr;gap:4px;background:#0f121a;border:1px solid var(--line);border-radius:12px;padding:4px;margin:18px 0}
-.seg button{background:transparent;color:var(--mut);border:0;border-radius:9px;padding:10px;font:inherit;font-weight:600;cursor:pointer}
-.seg button.on{background:var(--gold);color:#000}
-.alert{padding:10px 12px;border-radius:10px;margin:0 0 12px;font-size:.9rem}
-.alert-danger{background:#3b0d10;color:#ff9b9b;border:1px solid var(--red)}
-.hint{font-size:.8rem;color:var(--mut);margin-top:12px;text-align:center}
-.hint code{color:var(--gold)}
+    body { background: var(--cinema-fundo); color: var(--bs-body-color); min-height: 100vh; font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; }
 
-.seat-row+.seat-row{margin-top:2px}
-@media(max-width:560px){
-  .seat{width:23px;height:21px;font-size:.5rem;margin:1px}
-  .lbl{width:16px}
-  .aisle{width:8px;flex-basis:8px}
-  h1{font-size:1.5rem}
-}
-</style>
+    /* Botões na cor primária e no dourado */
+    .btn-danger { --bs-btn-bg: #e50914; --bs-btn-border-color: #e50914; --bs-btn-hover-bg: #b8070f; --bs-btn-hover-border-color: #b8070f; --bs-btn-active-bg: #b8070f; --bs-btn-active-border-color: #b8070f; --bs-btn-disabled-bg: #e50914; --bs-btn-disabled-border-color: #e50914; }
+    .btn-warning { --bs-btn-bg: #f5c518; --bs-btn-border-color: #f5c518; --bs-btn-color: #000; --bs-btn-hover-bg: #dcae12; --bs-btn-hover-border-color: #dcae12; --bs-btn-hover-color: #000; }
+    .btn-outline-light { --bs-btn-hover-bg: #f8f9fa; }
+
+    /* ===== Navegação ===== */
+    .navbar-cinema { background: rgba(9, 11, 16, .94); backdrop-filter: blur(8px); border-bottom: 1px solid var(--cinema-borda); box-shadow: inset 0 -2px 0 var(--cinema-vermelho); position: sticky; top: 0; z-index: 1020; }
+    .marca { font-weight: 800; letter-spacing: .02em; color: #fff; font-size: 1.15rem; }
+    .marca i { color: var(--cinema-vermelho); }
+    .menu-link { color: var(--bs-secondary-color); text-decoration: none; padding: .45rem .15rem; border-bottom: 2px solid transparent; font-weight: 500; font-size: .95rem; }
+    .menu-link:hover { color: #fff; }
+    .menu-link.ativo { color: var(--cinema-dourado); border-bottom-color: var(--cinema-dourado); }
+
+    /* ===== Cabeçalhos e cartões ===== */
+    .hero { background: radial-gradient(900px 320px at 12% -30%, rgba(229, 9, 20, .30), transparent 70%), linear-gradient(180deg, #161b26, var(--cinema-fundo)); border: 1px solid var(--cinema-borda); border-radius: 18px; padding: 2.25rem 2rem; margin-bottom: 2rem; }
+    .hero h1 { font-weight: 800; letter-spacing: -.01em; }
+    .cartao { background: var(--cinema-cartao); border: 1px solid var(--cinema-borda); border-radius: 14px; box-shadow: 0 8px 22px rgba(0, 0, 0, .35); }
+    .cartao-elevado { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+    .cartao-elevado:hover { transform: translateY(-6px); box-shadow: 0 18px 38px rgba(0, 0, 0, .6); border-color: #3a4256; }
+    .rotulo { font-size: .75rem; text-transform: uppercase; letter-spacing: .12em; color: var(--bs-secondary-color); }
+
+    /* ===== Pôsteres ===== */
+    .filme-card { overflow: hidden; height: 100%; }
+    .classificacao { font-weight: 700; font-size: .75rem; padding: .3em .6em; border-radius: 6px; color: #fff; }
+
+    /* Capa do filme: foto com fallback elegante */
+    .filme-card { overflow: hidden; height: 100%; transition: border-color .35s ease; }
+    .filme-card:hover { border-color: rgba(245, 197, 24, .5); }
+    .capa { position: relative; height: 340px; overflow: hidden; background: #0b0d12; }
+    .capa img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .35s ease; }
+    .filme-card:hover .capa img { transform: scale(1.05); }
+    .capa::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(to top, #161a23 8%, transparent 65%); }
+    .capa .classificacao { position: absolute; top: 12px; right: 12px; z-index: 2; }
+    .capa-info { position: absolute; left: 14px; right: 14px; bottom: 12px; z-index: 2; color: #d5dbe7; font-size: .8rem; letter-spacing: .02em; }
+    .class-L { background: #1f9d55; }
+    .class-12 { background: #2a7fd4; }
+    .class-14 { background: #e0a100; color: #111; }
+    .class-16 { background: #e50914; }
+    .btn-sessao { border: 1px solid rgba(245, 197, 24, .5); color: var(--cinema-dourado); background: transparent; border-radius: 8px; font-size: .82rem; padding: .3rem .65rem; }
+    .btn-sessao:hover { background: var(--cinema-dourado); color: #000; border-color: var(--cinema-dourado); }
+
+    /* ===== Sala ===== */
+    .tela-cinema { width: 72%; height: 44px; margin: 0 auto; border-radius: 50% 50% 0 0 / 100% 100% 0 0; background: linear-gradient(180deg, rgba(245, 197, 24, .75), rgba(245, 197, 24, .03)); box-shadow: 0 -12px 40px rgba(245, 197, 24, .35); border-top: 3px solid var(--cinema-dourado); }
+    .tela-legenda { text-align: center; letter-spacing: .45em; font-size: .7rem; color: var(--bs-secondary-color); margin: .6rem 0 1.5rem; }
+    .fileira { display: flex; align-items: center; justify-content: center; gap: .35rem; margin-bottom: .45rem; }
+    .fileira-letra { width: 1.2rem; text-align: center; font-size: .8rem; font-weight: 700; color: var(--bs-secondary-color); }
+    .corredor { display: inline-block; width: 1.6rem; flex: 0 0 1.6rem; }
+    .assento { width: 2.2rem; height: 2rem; border-radius: 9px 9px 4px 4px; border: 1px solid #3a4256; background: #1b2030; color: #c9d1e0; font-size: .72rem; font-weight: 600; padding: 0; cursor: pointer; transition: transform .15s ease, background-color .15s ease, border-color .15s ease; }
+    .assento:hover:not(:disabled) { transform: translateY(-2px); border-color: var(--cinema-dourado); }
+    .assento.selecionado { background: var(--cinema-dourado); border-color: var(--cinema-dourado); color: #000; box-shadow: 0 0 14px rgba(245, 197, 24, .5); }
+    .assento.ocupado { background: #2a2e3a; border-color: #2a2e3a; color: #5c6375; border-bottom: 2px solid var(--cinema-vermelho); cursor: not-allowed; }
+    .assento-amostra { display: inline-block; width: 1.1rem; height: 1rem; border-radius: 4px 4px 2px 2px; margin-right: .35rem; vertical-align: middle; }
+    .amostra-livre { background: #1b2030; border: 1px solid #3a4256; }
+    .amostra-selecionado { background: var(--cinema-dourado); }
+    .amostra-ocupado { background: #2a2e3a; border-bottom: 2px solid var(--cinema-vermelho); }
+
+    /* ===== Ingresso digital ===== */
+    .ingresso { position: relative; background: linear-gradient(135deg, #1b2030, #0f121a); border: 1px dashed rgba(245, 197, 24, .55); border-radius: 16px; padding: 1.5rem; }
+    .ingresso::before, .ingresso::after { content: ""; position: absolute; top: 50%; width: 26px; height: 26px; border-radius: 50%; background: var(--cinema-fundo); transform: translateY(-50%); }
+    .ingresso::before { left: -13px; }
+    .ingresso::after { right: -13px; }
+    .codigo { font-family: ui-monospace, Menlo, Consolas, monospace; letter-spacing: .18em; background: var(--cinema-dourado); color: #000; font-weight: 800; padding: .35rem .8rem; border-radius: 6px; display: inline-block; }
+
+    /* ===== Login ===== */
+    .login-cartao { border-top: 3px solid var(--cinema-vermelho); }
+    .logo-circulo { width: 64px; height: 64px; border-radius: 50%; background: rgba(229, 9, 20, .15); color: var(--cinema-vermelho); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; margin: 0 auto 1rem; }
+    .seg { display: flex; background: #0f121a; border: 1px solid var(--cinema-borda); border-radius: 10px; padding: 4px; }
+    .seg button { flex: 1; border: 0; background: transparent; color: var(--bs-secondary-color); padding: .55rem; border-radius: 8px; font-weight: 600; }
+    .seg button.ativo { background: var(--cinema-vermelho); color: #fff; }
+
+    /* ===== Painel Master ===== */
+    .kpi-icone { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; background: rgba(245, 197, 24, .12); color: var(--cinema-dourado); }
+    .kpi-valor { font-size: 1.9rem; font-weight: 800; color: #fff; }
+    .nav-pills .nav-link { color: var(--bs-secondary-color); }
+    .nav-pills .nav-link.active { background: var(--cinema-vermelho); color: #fff; }
+    .table { --bs-table-bg: transparent; --bs-table-border-color: var(--cinema-borda); }
+    .alerta-flutuante { position: fixed; top: 84px; right: 16px; z-index: 1100; min-width: 260px; box-shadow: 0 10px 30px rgba(0, 0, 0, .5); }
+
+    .ico { width: 1em; height: 1em; flex: 0 0 auto; vertical-align: -0.15em; }
+    .ico-slot { display: inline-flex; align-items: center; justify-content: center; }
+    @media (max-width: 576px) {
+      .assento { width: 1.8rem; height: 1.7rem; font-size: .62rem; }
+      .corredor { width: .8rem; flex-basis: .8rem; }
+      .hero { padding: 1.5rem 1.25rem; }
+    }
+  </style>
 </head>
 <body>
-<header class="top"><div id="hdr"></div></header>
-<main id="app"></main>
-<div id="modal"></div>
-<div class="toasts" id="toasts"></div>
 
-<script>
-/* ============ CONSTANTES E SEED ============ */
-const KEY = 'cineflow_db_v2', CART_KEY = 'cineflow_cart', SESSION_KEY = 'cineflow_session';
-const ROWS = 'ABCDEFGH'.split(''), COLS = 12;
-const PAL = [['#0f2027','#2c5364'],['#3a1c71','#d76d77'],['#1a0000','#b0060f'],['#134e5e','#c99a06'],['#1d2330','#e50914']];
-
-const SEED = {
-  rooms: [
-    { id: 'r1', name: 'Sala 1 IMAX', aisles: [4, 8] },
-    { id: 'r2', name: 'Sala 2 3D', aisles: [4, 8] },
-    { id: 'r3', name: 'Sala 3 Padrão', aisles: [6] }
-  ],
-  movies: [
-    { id: 'm1', title: 'Horizonte Estelar', genre: 'Ficção Científica', duration: 142, rating: '12', synopsis: 'Uma tripulação atravessa um buraco de minhoca para salvar a Terra de um colapso climático irreversível.', colors: PAL[0], ativo: true },
-    { id: 'm2', title: 'A Última Noite em Lisboa', genre: 'Drama', duration: 118, rating: '14', synopsis: 'Um fotógrafo aposentado revisita os lugares do seu primeiro amor em uma noite de chuva.', colors: PAL[1], ativo: true },
-    { id: 'm3', title: 'Caçadores de Sombra', genre: 'Ação', duration: 128, rating: '16', synopsis: 'Uma agente disputa com uma organização secreta o controle de uma arma capaz de apagar cidades.', colors: PAL[2], ativo: true },
-    { id: 'm4', title: 'Risos de Verão', genre: 'Comédia', duration: 96, rating: 'Livre', synopsis: 'Três amigos de infância se reencontram em uma cidade litorânea e um casamento vira um caos divertido.', colors: PAL[3], ativo: true }
-  ],
-  sessions: [
-    { id: 's1', movieId: 'm1', roomId: 'r1', date: '2026-11-24', time: '14:00' },
-    { id: 's2', movieId: 'm1', roomId: 'r1', date: '2026-11-24', time: '19:30' },
-    { id: 's3', movieId: 'm2', roomId: 'r3', date: '2026-11-24', time: '16:15' },
-    { id: 's4', movieId: 'm2', roomId: 'r2', date: '2026-11-25', time: '21:00' },
-    { id: 's5', movieId: 'm3', roomId: 'r2', date: '2026-11-24', time: '17:45' },
-    { id: 's6', movieId: 'm3', roomId: 'r1', date: '2026-11-25', time: '20:10' },
-    { id: 's7', movieId: 'm4', roomId: 'r3', date: '2026-11-24', time: '13:00' },
-    { id: 's8', movieId: 'm4', roomId: 'r3', date: '2026-11-25', time: '18:30' }
-  ],
-  products: [
-    { id: 'p1', cat: 'Pipocas', name: 'Pipoca Pequena', desc: 'Balde individual, salgada ou doce.', price: 14.5, e: '🍿', active: true },
-    { id: 'p2', cat: 'Pipocas', name: 'Pipoca Grande', desc: 'Balde family size, ideal para dividir.', price: 22, e: '🍿', active: true },
-    { id: 'p3', cat: 'Pipocas', name: 'Pipoca Caramelo', desc: 'Coberta com calda de caramelo crocante.', price: 24.9, e: '🍯', active: true },
-    { id: 'p4', cat: 'Bebidas', name: 'Refrigerante 500ml', desc: 'Cola, laranja ou limão, bem gelado.', price: 9, e: '🥤', active: true },
-    { id: 'p5', cat: 'Bebidas', name: 'Água 500ml', desc: 'Água mineral sem gás.', price: 6, e: '💧', active: true },
-    { id: 'p6', cat: 'Bebidas', name: 'Suco Natural', desc: 'Laranja ou maracujá, feito na hora.', price: 12, e: '🧃', active: true },
-    { id: 'p7', cat: 'Combos', name: 'Combo Casal', desc: '2 pipocas grandes + 2 refrigerantes.', price: 49.9, e: '🎁', active: true },
-    { id: 'p8', cat: 'Combos', name: 'Combo Solo', desc: '1 pipoca média + 1 refrigerante.', price: 32, e: '🎟️', active: true },
-    { id: 'p9', cat: 'Doces', name: 'Chocolate ao Leite', desc: 'Barra de 90g.', price: 8, e: '🍫', active: true },
-    { id: 'p10', cat: 'Doces', name: 'Mini Donut', desc: 'Açúcar e canela, porção com 4 unidades.', price: 11, e: '🍩', active: true }
-  ],
-  prices: { inteira: 30, meia: 15, autoMeia: true },
-  occupied: { s1: ['A1', 'A2', 'B5', 'C7', 'C8', 'D12'], s3: ['G1', 'H12'], s5: ['E3', 'E4', 'F6', 'F7'] },
-  orders: []
-};
-
-/* ============ UTILITÁRIOS ============ */
-const $ = s => document.querySelector(s);
-const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const fmt = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-const fmtDate = d => d ? d.split('-').reverse().slice(0, 2).join('/') : '';
-const uid = p => p + Math.random().toString(36).slice(2, 8);
-
-/* ============ PERSISTÊNCIA ============ */
-// Inicialização automática: grava filmes e produtos padrão se o localStorage estiver vazio
-function loadDB() {
-  try { const raw = localStorage.getItem(KEY); if (raw) return JSON.parse(raw); } catch (e) {}
-  const seed = JSON.parse(JSON.stringify(SEED));
-  localStorage.setItem(KEY, JSON.stringify(seed));
-  return seed;
-}
-let db = loadDB();
-
-function loadSession() {
-  try {
-    const s = JSON.parse(localStorage.getItem(SESSION_KEY));
-    return s && s.nome && (s.perfil === 'cliente' || s.perfil === 'master') ? s : null;
-  } catch (e) { return null; }
-}
-let session = loadSession();
-function startSession(nome, perfil) { session = { nome, perfil }; localStorage.setItem(SESSION_KEY, JSON.stringify(session)); }
-function endSession() { session = null; localStorage.removeItem(SESSION_KEY); }
-const isMaster = () => !!session && session.perfil === 'master';
-
-const ui = { cat: 'Todos', lastOrder: null, showOrders: false, mtab: 'dash', editMovie: null, ltab: 'cliente', loginErr: '', draft: { nome: '', email: '', user: '' } };
-
-const emptyCart = () => ({ sessionId: null, seats: [], tipo: 'inteira', items: {} });
-function getCart() { try { return { ...emptyCart(), ...JSON.parse(localStorage.getItem(CART_KEY)) }; } catch (e) { return emptyCart(); } }
-function setCart(c) { localStorage.setItem(CART_KEY, JSON.stringify(c)); }
-
-function commit() { localStorage.setItem(KEY, JSON.stringify(db)); render(); }
-
-function sessionInfo(sid) {
-  const session_ = db.sessions.find(s => s.id === sid);
-  if (!session_) return null;
-  return { session: session_, movie: db.movies.find(m => m.id === session_.movieId), room: db.rooms.find(r => r.id === session_.roomId) };
-}
-
-function totals(c) {
-  const unit = c.tipo === 'meia' ? db.prices.meia : db.prices.inteira;
-  const tickets = c.seats.length * unit;
-  const items = Object.entries(c.items).reduce((s, [id, q]) => {
-    const p = db.products.find(x => x.id === id);
-    return s + (p && q > 0 ? p.price * q : 0);
-  }, 0);
-  const qty = Object.values(c.items).reduce((a, b) => a + b, 0);
-  return { unit, tickets, items, total: tickets + items, count: c.seats.length + qty };
-}
-
-function poster(m) {
-  const [c1, c2] = m.colors;
-  const words = esc(m.title).split(' ').slice(0, 3);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${c1}"/><stop offset="1" stop-color="${c2}"/></linearGradient></defs><rect width="300" height="450" fill="url(#g)"/><circle cx="150" cy="150" r="70" fill="rgba(255,255,255,.08)"/><path d="M110 150l30 30 50-60" stroke="rgba(255,255,255,.35)" stroke-width="10" fill="none"/>${words.map((w, i) => `<text x="150" y="${290 + i * 40}" text-anchor="middle" font-family="Arial Black,Arial" font-size="32" fill="#fff">${w}</text>`).join('')}</svg>`;
-  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-}
-
-function toast(msg, type = '') {
-  const d = document.createElement('div');
-  d.className = 'toast ' + type;
-  d.textContent = msg;
-  $('#toasts').appendChild(d);
-  setTimeout(() => d.remove(), 3200);
-}
-
-/* ============ ROTEAMENTO E CONTROLE DE ACESSO ============ */
-const CLIENT_ROUTES = ['catalogo', 'sala', 'bomboniere', 'checkout'];
-
-function route() {
-  const h = location.hash.replace(/^#\/?/, '').split('/');
-  return { name: h[0] || 'catalogo', arg: h[1] };
-}
-
-// Decide qual tela pode ser exibida conforme o perfil da sessão
-function resolve(name) {
-  if (!session) return 'login';
-  if (isMaster()) return 'master';
-  return CLIENT_ROUTES.includes(name) ? name : 'catalogo';
-}
-
-function render() {
-  const r = route();
-  const name = resolve(r.name);
-  if (name !== r.name) { location.hash = '#/' + name; return; }
-  if (name !== 'checkout') ui.lastOrder = null;
-
-  const c = getCart(), t = totals(c);
-  $('#hdr').innerHTML = header(name, t);
-
-  let html;
-  switch (name) {
-    case 'login': html = vLogin(); break;
-    case 'sala': html = vSala(r.arg); break;
-    case 'bomboniere': html = vBomb(); break;
-    case 'checkout': html = vCheckout(); break;
-    case 'master': html = vMaster(); break;
-    default: html = vCatalogo();
-  }
-  $('#app').innerHTML = html;
-  $('#modal').innerHTML = ui.showOrders && session && !isMaster() ? ordersModal() : '';
-}
-
-function header(name, t) {
-  const brand = `<a class="brand" href="#/${!session ? 'login' : isMaster() ? 'master' : 'catalogo'}">🎬 Cine<span>Flow</span></a>`;
-  if (!session) {
-    return `<div class="bar">${brand}<nav><a class="btn btn-sm btn-gold" href="#/login">Entrar</a></nav></div>`;
-  }
-  if (isMaster()) {
-    return `<div class="bar">${brand}<nav>
-      <a href="#/master" class="${name === 'master' ? 'on' : ''}">Painel Master</a>
-      <span class="badge-master">Admin Master</span>
-      <button class="btn btn-sm btn-ghost" data-act="logout">Sair</button></nav></div>`;
-  }
-  const links = [['catalogo', 'Filmes'], ['bomboniere', 'Bomboniere'], ['checkout', 'Checkout' + (t.count ? ` (${t.count})` : '')]];
-  return `<div class="bar">${brand}<nav>
-    ${links.map(([k, l]) => `<a href="#/${k}" class="${name === k ? 'on' : ''}">${l}</a>`).join('')}
-    <button class="link" data-act="orders">🎟️ Meus Ingressos</button>
-    <span class="who">👤 ${esc(session.nome)}</span>
-    <button class="btn btn-sm btn-ghost" data-act="logout">Sair</button></nav></div>`;
-}
-
-/* ============ TELA DE LOGIN ============ */
-function vLogin() {
-  const d = ui.draft;
-  const isCli = ui.ltab === 'cliente';
-  const alert = ui.loginErr ? `<div class="alert alert-danger" role="alert">${esc(ui.loginErr)}</div>` : '';
-  const form = isCli ? `
-    <form data-form="login-cliente" novalidate>
-      <div class="field"><label for="nome">Nome</label><input id="nome" name="nome" value="${esc(d.nome)}" placeholder="Como devemos chamar você?" autocomplete="name"></div>
-      <div class="field"><label for="email">E-mail</label><input id="email" name="email" type="email" value="${esc(d.email)}" placeholder="voce@email.com" autocomplete="email"></div>
-      <button class="btn btn-gold full" type="submit">Entrar como Cliente</button>
-      <button class="btn btn-ghost full" type="button" data-act="demo">Entrar como Visitante / Demo</button>
-    </form>` : `
-    <form data-form="login-master" novalidate>
-      <div class="field"><label for="user">Usuário</label><input id="user" name="user" value="${esc(d.user)}" autocomplete="username"></div>
-      <div class="field"><label for="pass">Senha</label><input id="pass" name="pass" type="password" autocomplete="current-password"></div>
-      <button class="btn btn-gold full" type="submit">Entrar como Master</button>
-    </form>
-    <p class="hint">Credenciais de teste: <code>admin</code> / <code>1234</code></p>`;
-  return `<div class="login-wrap"><div class="card login-card">
-    <div class="brandmark">🎬</div>
-    <h2 class="center">Bem-vindo ao CineFlow</h2>
-    <p class="mut small center">Escolha como deseja entrar</p>
-    <div class="seg" role="tablist">
-      <button type="button" class="${isCli ? 'on' : ''}" data-act="ltab" data-v="cliente" role="tab" aria-selected="${isCli}">Sou Cliente</button>
-      <button type="button" class="${!isCli ? 'on' : ''}" data-act="ltab" data-v="master" role="tab" aria-selected="${!isCli}">Sou Master</button>
+  <!-- Barra de navegação -->
+  <nav class="navbar-cinema">
+    <div class="container d-flex flex-wrap align-items-center gap-3 py-2">
+      <span class="marca">CINE UNEX</span>
+      <ul class="nav flex-wrap gap-3 me-auto" id="menu-navegacao">
+        <li class="nav-item" data-visivel="cliente"><a class="menu-link" href="#" data-tela="filmes">Filmes em Cartaz</a></li>
+        <li class="nav-item" data-visivel="cliente"><a class="menu-link" href="#" data-tela="bomboniere"><span class="ico-slot" data-icone="cup"></span> Bomboniere</a></li>
+        <li class="nav-item" data-visivel="cliente"><a class="menu-link" href="#" data-tela="checkout">Resumo da Compra <span class="badge bg-danger ms-1" id="contador-carrinho">0</span></a></li>
+        <li class="nav-item" data-visivel="cliente"><a class="menu-link" href="#" data-tela="ingressos">Meus Ingressos</a></li>
+        <li class="nav-item" data-visivel="master"><a class="menu-link" href="#" data-tela="master">Painel Master</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        <span class="small text-secondary" id="nome-usuario"></span>
+        <button class="btn btn-outline-light btn-sm d-none" id="btn-sair"><span class="ico-slot" data-icone="logout"></span> Sair</button>
+      </div>
     </div>
-    ${alert}${form}
-  </div></div>`;
-}
+  </nav>
 
-/* ============ VISÕES DO CLIENTE ============ */
-function vCatalogo() {
-  const movies = db.movies.filter(m => m.ativo);
-  const cards = movies.map(m => {
-    const ss = db.sessions.filter(s => s.movieId === m.id).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
-    const chips = ss.map(s => {
-      const rm = db.rooms.find(r => r.id === s.roomId);
-      return `<a class="chip" href="#/sala/${s.id}">${fmtDate(s.date)} ${s.time} · ${esc(rm.name)}</a>`;
-    }).join('') || '<span class="mut small">Sem sessões programadas.</span>';
-    return `<div class="card movie"><img class="poster" src="${poster(m)}" alt="Pôster de ${esc(m.title)}"><div class="body">
-      <div class="row-between"><strong>${esc(m.title)}</strong><span class="rating">${esc(m.rating)}</span></div>
-      <div class="gold small">${esc(m.genre)} · ${m.duration} min</div>
-      <p class="mut small">${esc(m.synopsis)}</p><div>${chips}</div></div></div>`;
-  }).join('');
-  return `<div class="wrap"><h1>Filmes em <span class="gold">cartaz</span></h1><p class="mut">Olá, ${esc(session.nome)}! Escolha o filme, o horário e a sala.</p>
-    ${cards ? `<div class="grid">${cards}</div>` : '<div class="card">Nenhum filme em cartaz no momento.</div>'}</div>`;
-}
+  <main class="container py-4">
+    <div id="aviso" class="alert alert-flutuante d-none" role="alert"></div>
 
-function vSala(sid) {
-  const info = sessionInfo(sid);
-  if (!info) return `<div class="wrap"><div class="card">Sessão não encontrada. <a href="#/catalogo">Voltar aos filmes</a></div></div>`;
-  let c = getCart();
-  if (c.sessionId !== sid) { c = { ...c, sessionId: sid, seats: [] }; setCart(c); }
-  const occ = new Set(db.occupied[sid] || []);
-  const { movie, room, session: sess } = info;
+    <!-- TELA: LOGIN -->
+    <section id="tela-login" class="d-none">
+      <div class="row justify-content-center mt-3">
+        <div class="col-12 col-sm-9 col-md-6 col-lg-4">
+          <div class="cartao login-cartao">
+            <div class="card-body p-4 p-md-5">
+              <div class="logo-circulo"><span class="ico-slot" data-icone="lock"></span></div>
+              <h1 class="h4 text-center mb-1">Entrar no sistema</h1>
+              <p class="small text-secondary text-center mb-4">Escolha o tipo de acesso</p>
 
-  let rows = '';
-  ROWS.forEach(row => {
-    let line = `<div class="seat-row"><span class="lbl">${row}</span>`;
-    for (let n = 1; n <= COLS; n++) {
-      if (room.aisles.includes(n - 1)) line += '<span class="aisle"></span>';
-      const id = row + n, o = occ.has(id), s = c.seats.includes(id);
-      line += `<button class="seat ${o ? 'occ' : s ? 'sel' : ''}" ${o ? 'disabled' : ''} data-act="seat" data-id="${id}" title="${id}${o ? ' (ocupado)' : ''}">${n}</button>`;
-    }
-    rows += line + `<span class="lbl">${row}</span></div>`;
-  });
+              <div class="seg mb-4">
+                <button type="button" class="ativo" id="aba-cliente">Sou Cliente</button>
+                <button type="button" id="aba-master">Sou Master</button>
+              </div>
 
-  const t = totals(c);
-  const seatsTxt = c.seats.length ? [...c.seats].sort().join(', ') : 'Nenhum assento selecionado';
-  return `<div class="wrap">
-    <a href="#/catalogo" class="mut small">← Voltar aos filmes</a>
-    <h1 class="mt">${esc(movie.title)}</h1>
-    <p class="mut">${esc(room.name)} · ${fmtDate(sess.date)} às ${sess.time} · ${esc(movie.rating)}</p>
-    <div class="two">
-      <div class="card">
-        <div class="seatwrap"><div class="screen"></div><div class="screen-lbl">TELA</div>${rows}</div>
-        <div class="legend">
-          <span><i class="dot" style="background:var(--av)"></i>Disponível</span>
-          <span><i class="dot" style="background:var(--gold)"></i>Selecionado</span>
-          <span><i class="dot" style="background:var(--occ);opacity:.6"></i>Ocupado</span>
+              <div id="alerta-login" class="alert alert-danger d-none"></div>
+
+              <form id="form-cliente" novalidate>
+                <div class="mb-3">
+                  <label for="input-nome" class="form-label small">Nome</label>
+                  <input type="text" class="form-control" id="input-nome" placeholder="Seu nome">
+                </div>
+                <div class="mb-4">
+                  <label for="input-email" class="form-label small">E-mail</label>
+                  <input type="email" class="form-control" id="input-email" placeholder="voce@email.com">
+                </div>
+                <button type="submit" class="btn btn-danger w-100">Entrar</button>
+                <button type="button" class="btn btn-outline-light w-100 mt-2" id="btn-visitante">Entrar como visitante</button>
+              </form>
+
+              <form id="form-master" class="d-none" novalidate>
+                <div class="mb-3">
+                  <label for="input-usuario" class="form-label small">Usuário</label>
+                  <input type="text" class="form-control" id="input-usuario" autocomplete="username">
+                </div>
+                <div class="mb-4">
+                  <label for="input-senha" class="form-label small">Senha</label>
+                  <input type="password" class="form-control" id="input-senha" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-danger w-100">Entrar como Master</button>
+                <p class="small text-secondary text-center mt-3 mb-0">Usuário: admin &middot; Senha: 1234</p>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card">
-        <h3>Tipo de ingresso</h3>
-        <label class="radio"><input type="radio" name="tipo" ${c.tipo === 'inteira' ? 'checked' : ''} data-act="tipo" data-v="inteira"> Inteira · ${fmt(db.prices.inteira)}</label>
-        <label class="radio"><input type="radio" name="tipo" ${c.tipo === 'meia' ? 'checked' : ''} data-act="tipo" data-v="meia"> Meia-Entrada · ${fmt(db.prices.meia)}</label>
-        <hr>
-        <div class="mut small">Assentos (${c.seats.length})</div>
-        <div class="bold">${seatsTxt}</div>
-        <div class="sumline"><span>Valor unitário</span><span>${fmt(t.unit)}</span></div>
-        <div class="sumline big"><span>Subtotal</span><span class="gold">${fmt(t.tickets)}</span></div>
-        <div class="stack">
-          <button class="btn btn-ghost" data-act="clear">Limpar seleção</button>
-          <a class="btn btn-ghost" href="#/bomboniere">🍿 Adicionar bomboniere</a>
-          <a class="btn btn-gold ${c.seats.length ? '' : 'dis'}" href="#/checkout">Ir para o checkout</a>
+    </section>
+
+    <!-- TELA: FILMES -->
+    <section id="tela-filmes" class="d-none">
+      <div class="hero">
+        <p class="rotulo mb-2">Cinema</p>
+        <h1 class="h2 mb-2">Filmes em Cartaz</h1>
+        <p class="text-secondary mb-0">Escolha um horário para ver os assentos disponíveis.</p>
+      </div>
+      <div class="row g-4" id="lista-filmes"></div>
+    </section>
+
+    <!-- TELA: SALA -->
+    <section id="tela-sala" class="d-none">
+      <div class="d-flex justify-content-between flex-wrap gap-2 align-items-end mb-4">
+        <div>
+          <p class="rotulo mb-1">Sessão</p>
+          <h2 class="h3 mb-1" id="sala-titulo">Escolha seus assentos</h2>
+          <small class="text-secondary" id="sala-info"></small>
+        </div>
+        <button class="btn btn-outline-light btn-sm" data-tela="filmes"><span class="ico-slot" data-icone="arrowLeft"></span> Voltar aos filmes</button>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-8">
+          <div class="cartao p-3 p-md-4">
+            <div class="tela-cinema"></div>
+            <div class="tela-legenda">TELA</div>
+            <div id="mapa-assentos"></div>
+            <div class="d-flex flex-wrap justify-content-center gap-4 mt-4">
+              <span class="legenda-item"><span class="assento-amostra amostra-livre"></span>Disponível</span>
+              <span class="legenda-item"><span class="assento-amostra amostra-selecionado"></span>Selecionado</span>
+              <span class="legenda-item"><span class="assento-amostra amostra-ocupado"></span>Ocupado</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4">
+          <div class="cartao p-4">
+            <p class="rotulo mb-2">Tipo de ingresso</p>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="radio" name="tipo" id="radio-inteira" value="inteira" checked>
+              <label class="form-check-label" for="radio-inteira">Inteira: <span id="preco-inteira"></span></label>
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="radio" name="tipo" id="radio-meia" value="meia">
+              <label class="form-check-label" for="radio-meia">Meia-entrada: <span id="preco-meia"></span></label>
+            </div>
+            <hr>
+            <p class="rotulo mb-1">Assentos escolhidos</p>
+            <p id="lista-assentos-escolhidos" class="mb-3"></p>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <span class="text-secondary">Subtotal</span>
+              <strong class="fs-5 text-warning" id="subtotal-ingressos"></strong>
+            </div>
+            <button class="btn btn-danger w-100" data-tela="bomboniere"><span class="ico-slot" data-icone="cup"></span> Ir para a bomboniere</button>
+            <button class="btn btn-outline-light w-100 mt-2" data-tela="checkout"><span class="ico-slot" data-icone="cart"></span> Ir para o resumo</button>
+            <button class="btn btn-link btn-sm text-secondary p-0 mt-3" id="btn-limpar-assentos">Limpar seleção</button>
+          </div>
         </div>
       </div>
-    </div></div>`;
-}
+    </section>
 
-function vBomb() {
-  const cats = ['Todos', ...new Set(db.products.map(p => p.cat))];
-  const list = db.products.filter(p => p.active && (ui.cat === 'Todos' || p.cat === ui.cat));
-  const c = getCart(), t = totals(c);
-  const cards = list.map(p => `<div class="card"><div class="ico">${esc(p.e)}</div><span class="tag">${esc(p.cat)}</span>
-    <h3 class="sm mt">${esc(p.name)}</h3><p class="mut small">${esc(p.desc)}</p>
-    <div class="row-between mt"><strong class="gold">${fmt(p.price)}</strong>
-    <div class="qty"><button class="btn btn-sm btn-ghost" data-act="qty" data-id="${p.id}" data-d="-1">−</button><span>${c.items[p.id] || 0}</span><button class="btn btn-sm btn-red" data-act="qty" data-id="${p.id}" data-d="1">+</button></div></div></div>`).join('');
-  return `<div class="wrap"><h1>🍿 Bomboniere</h1><p class="mut">Adicione itens avulsos ou junto com seus ingressos.</p>
-    <div class="tabs">${cats.map(k => `<button class="btn btn-sm ${ui.cat === k ? 'btn-gold' : 'btn-ghost'}" data-act="cat" data-v="${esc(k)}">${esc(k)}</button>`).join('')}</div>
-    ${cards ? `<div class="grid">${cards}</div>` : '<div class="card">Nenhum item disponível nesta categoria.</div>'}</div>
-    <div class="bottom"><div class="in"><span>${c.seats.length} ingresso(s) · ${Object.values(c.items).reduce((a, b) => a + b, 0)} item(ns) · <b class="gold">${fmt(t.total)}</b></span>
-    <a class="btn btn-gold ${t.count ? '' : 'dis'}" href="#/checkout">Ir para o checkout</a></div></div>`;
-}
-
-function vCheckout() {
-  if (ui.lastOrder) return ticketHtml(ui.lastOrder);
-  const c = getCart(), t = totals(c);
-  if (!t.count) return `<div class="wrap"><div class="card center"><p>Seu carrinho está vazio.</p><a class="btn btn-red" href="#/catalogo">Escolher filmes</a></div></div>`;
-  const info = c.sessionId ? sessionInfo(c.sessionId) : null;
-  const ticketsBlock = c.seats.length && info ? `<h3>Ingressos</h3>
-    <p><b>${esc(info.movie.title)}</b> · ${esc(info.room.name)}<br><span class="mut small">${fmtDate(info.session.date)} às ${info.session.time}</span></p>
-    <p>Assentos: <b>${[...c.seats].sort().join(', ')}</b><br>${c.seats.length}× ${c.tipo === 'meia' ? 'Meia-Entrada' : 'Inteira'} = ${fmt(t.tickets)}</p>` : '';
-  const itemsBlock = Object.entries(c.items).filter(([, q]) => q > 0).map(([id, q]) => {
-    const p = db.products.find(x => x.id === id);
-    return p ? `<div class="sumline"><span>${q}× ${esc(p.name)}</span><span>${fmt(p.price * q)}</span></div>` : '';
-  }).join('');
-  return `<div class="wrap"><h1>Checkout</h1>
-    <div class="two">
-      <div class="card"><p class="mut small">Comprador: <b>${esc(session.nome)}</b></p>${ticketsBlock}${itemsBlock ? `<h3 class="mt">Bomboniere</h3>${itemsBlock}` : ''}</div>
-      <div class="card">
-        <div class="sumline"><span>Ingressos</span><span>${fmt(t.tickets)}</span></div>
-        <div class="sumline"><span>Bomboniere</span><span>${fmt(t.items)}</span></div>
-        <hr>
-        <div class="sumline big"><span>Total</span><span class="gold">${fmt(t.total)}</span></div>
-        <button class="btn btn-gold full mt" data-act="finish">Finalizar compra</button>
-        <a class="btn btn-ghost full" href="#/bomboniere">Voltar à bomboniere</a>
-        ${c.seats.length ? '' : '<p class="mut small mt">Você pode finalizar apenas com itens da bomboniere.</p>'}
-      </div>
-    </div></div>`;
-}
-
-function ticketHtml(o) {
-  return `<div class="wrap"><div class="ticket">
-    <div class="center"><div style="font-size:2.4rem">✅</div><h2>Compra confirmada!</h2><p class="mut">Apresente este código na entrada.</p>
-    <span class="code">${esc(o.code)}</span></div>
-    <h3>${esc(o.title)}</h3><p class="mut">${esc(o.detail)}</p>
-    <p>Titular: <b>${esc(o.cliente)}</b></p>
-    ${o.seats.length ? `<p>Assentos: <b>${o.seats.join(', ')}</b></p>` : ''}
-    <p>Total pago: <b class="gold">${fmt(o.total)}</b></p>
-    <div class="qr"></div>
-    <div class="center mt"><a class="btn btn-red" href="#/catalogo">Voltar ao catálogo</a></div>
-  </div></div>`;
-}
-
-function ordersModal() {
-  const list = [...db.orders].reverse().map(o => `<div class="ord">
-    <div class="row-between"><b>${esc(o.title)}</b><span class="code" style="font-size:.8rem;padding:3px 8px">${esc(o.code)}</span></div>
-    <div class="mut small">${esc(o.detail)} · ${esc(o.cliente)}</div>
-    <div class="small">${o.seats.length ? 'Assentos: ' + o.seats.join(', ') + ' · ' : ''}Total: ${fmt(o.total)}</div></div>`).join('');
-  return `<div class="ov" id="ov"><div class="modal">
-    <div class="head"><h3>🎟️ Meus Ingressos</h3><button class="btn btn-sm btn-ghost" data-act="closeOrders">Fechar</button></div>
-    ${list || '<p class="mut">Você ainda não possui compras.</p>'}</div></div>`;
-}
-
-/* ============ PAINEL MASTER ============ */
-function vMaster() {
-  const tabs = [['dash', 'Dashboard'], ['filmes', 'Filmes'], ['sessoes', 'Sessões'], ['precos', 'Preços'], ['produtos', 'Bomboniere']];
-  const body = { dash: mDash, filmes: mFilmes, sessoes: mSessoes, precos: mPrecos, produtos: mProdutos }[ui.mtab]();
-  return `<div class="wrap">
-    <div class="row-between"><h1>Painel Master</h1><span class="mut small">Edição de preços, filmes e sessões</span></div>
-    <div class="tabs">${tabs.map(([k, l]) => `<button class="btn btn-sm ${ui.mtab === k ? 'btn-gold' : 'btn-ghost'}" data-act="mtab" data-v="${k}">${l}</button>`).join('')}</div>
-    ${body}</div>`;
-}
-
-function mDash() {
-  const sold = db.orders.reduce((a, o) => a + (o.seats?.length || 0), 0);
-  const rev = db.orders.reduce((a, o) => a + o.total, 0);
-  return `<div class="grid kpis">
-    <div class="card kpi"><span class="mut">Filmes em cartaz</span><div class="v">${db.movies.filter(m => m.ativo).length}</div></div>
-    <div class="card kpi"><span class="mut">Ingressos vendidos</span><div class="v">${sold}</div></div>
-    <div class="card kpi"><span class="mut">Faturamento estimado</span><div class="v gold">${fmt(rev)}</div></div></div>`;
-}
-
-function mFilmes() {
-  const editing = !!ui.editMovie;
-  const m = editing && ui.editMovie !== 'new' ? db.movies.find(x => x.id === ui.editMovie) : null;
-  const v = m || { id: '', title: '', genre: '', duration: '', rating: 'Livre', synopsis: '', ativo: true };
-  const rows = db.movies.map(x => `<tr>
-    <td style="width:48px"><img src="${poster(x)}" width="36" style="border-radius:6px"></td>
-    <td><b>${esc(x.title)}</b><br><span class="mut small">${esc(x.genre)} · ${x.duration} min · ${esc(x.rating)}</span></td>
-    <td><label class="chk" style="margin:0"><input type="checkbox" ${x.ativo ? 'checked' : ''} data-chg="toggleMovie" data-id="${x.id}"> Em cartaz</label></td>
-    <td class="r"><button class="btn btn-sm btn-ghost" data-act="editMovie" data-id="${x.id}">Editar</button>
-    <button class="btn btn-sm btn-del" data-act="delMovie" data-id="${x.id}">Excluir</button></td></tr>`).join('');
-  return `<div class="two">
-    <div class="card"><div class="row-between"><h3>Filmes cadastrados</h3><button class="btn btn-sm btn-red" data-act="newMovie">+ Novo filme</button></div>
-      <div class="scroll"><table><tbody>${rows || '<tr><td class="mut">Nenhum filme cadastrado.</td></tr>'}</tbody></table></div></div>
-    <div class="card"><h3>${editing && m ? 'Editar filme' : 'Adicionar filme'}</h3>
-      <form data-form="movie" novalidate>
-        <input type="hidden" name="id" value="${esc(v.id)}">
-        <div class="field"><label>Título</label><input name="title" value="${esc(v.title)}" required></div>
-        <div class="row"><div class="field"><label>Gênero</label><input name="genre" value="${esc(v.genre)}" required></div>
-        <div class="field"><label>Duração (min)</label><input type="number" min="1" name="duration" value="${esc(v.duration)}" required></div>
-        <div class="field"><label>Classificação</label><input name="rating" value="${esc(v.rating)}"></div></div>
-        <div class="field"><label>Sinopse</label><textarea name="synopsis" rows="3" required>${esc(v.synopsis)}</textarea></div>
-        <label class="chk"><input type="checkbox" name="ativo" ${v.ativo ? 'checked' : ''}> Em cartaz</label>
-        <div class="row mt"><button class="btn btn-gold" type="submit">Salvar filme</button>${editing ? '<button type="button" class="btn btn-ghost" data-act="cancelEdit">Cancelar</button>' : ''}</div>
-      </form></div></div>`;
-}
-
-function mSessoes() {
-  const movies = db.movies.map(m => `<option value="${m.id}">${esc(m.title)}</option>`).join('');
-  const rooms = db.rooms.map(r => `<option value="${r.id}">${esc(r.name)}</option>`).join('');
-  const rows = [...db.sessions].sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time)).map(s => {
-    const m = db.movies.find(x => x.id === s.movieId), r = db.rooms.find(x => x.id === s.roomId);
-    return `<tr><td>${esc(m?.title)}</td><td>${esc(r?.name)}</td><td>${fmtDate(s.date)} ${s.time}</td><td>${(db.occupied[s.id] || []).length}</td>
-      <td class="r"><button class="btn btn-sm btn-ghost" data-act="resetSess" data-id="${s.id}">Liberar assentos</button>
-      <button class="btn btn-sm btn-del" data-act="delSess" data-id="${s.id}">Excluir</button></td></tr>`;
-  }).join('');
-  return `<div class="two">
-    <div class="card"><h3>Sessões programadas</h3><div class="scroll"><table>
-      <thead><tr><th>Filme</th><th>Sala</th><th>Data/hora</th><th>Ocupados</th><th></th></tr></thead>
-      <tbody>${rows || '<tr><td colspan="5" class="mut">Nenhuma sessão.</td></tr>'}</tbody></table></div></div>
-    <div class="card"><h3>Nova sessão</h3>
-      <form data-form="session" novalidate>
-        <div class="field"><label>Filme</label><select name="movie">${movies}</select></div>
-        <div class="field"><label>Sala</label><select name="room">${rooms}</select></div>
-        <div class="row"><div class="field"><label>Data</label><input type="date" name="date" value="2026-11-24" required></div>
-        <div class="field"><label>Horário</label><input type="time" name="time" value="20:00" required></div></div>
-        <button class="btn btn-gold" type="submit">Adicionar sessão</button>
-      </form></div></div>`;
-}
-
-function mPrecos() {
-  const p = db.prices;
-  return `<div class="card" style="max-width:520px"><h3>Valores de ingresso</h3>
-    <form data-form="prices" novalidate>
-      <div class="field"><label>Inteira (R$)</label><input type="number" step="0.5" min="0" name="inteira" value="${p.inteira}" required></div>
-      <div class="field"><label>Meia-Entrada (R$)</label><input type="number" step="0.5" min="0" name="meia" value="${p.meia}"></div>
-      <label class="chk"><input type="checkbox" name="auto" ${p.autoMeia ? 'checked' : ''}> Calcular meia automaticamente (50% da inteira)</label>
-      <button class="btn btn-gold mt" type="submit">Salvar preços</button>
-    </form>
-    <p class="mut small mt">As alterações aparecem imediatamente na visão do cliente.</p></div>`;
-}
-
-function mProdutos() {
-  const cats = [...new Set(db.products.map(p => p.cat))];
-  const rows = db.products.map(p => `<tr>
-    <td>${esc(p.e)}</td>
-    <td><input value="${esc(p.name)}" data-chg="pname" data-id="${p.id}"></td>
-    <td><span class="tag">${esc(p.cat)}</span></td>
-    <td style="width:110px"><input type="number" step="0.5" min="0" value="${p.price}" data-chg="pprice" data-id="${p.id}"></td>
-    <td><input type="checkbox" ${p.active ? 'checked' : ''} data-chg="pactive" data-id="${p.id}" title="Disponível"></td>
-    <td class="r"><button class="btn btn-sm btn-del" data-act="delProd" data-id="${p.id}">Excluir</button></td></tr>`).join('');
-  return `<div class="card"><h3>Itens da bomboniere</h3><div class="scroll"><table>
-    <thead><tr><th></th><th>Nome</th><th>Categoria</th><th>Preço (R$)</th><th>Disponível</th><th></th></tr></thead>
-    <tbody>${rows}</tbody></table></div></div>
-    <div class="card mt"><h3>Novo produto</h3>
-      <form data-form="product" novalidate>
-        <div class="row">
-          <div class="field"><label>Categoria</label><input name="cat" list="cats" placeholder="Ex: Pipocas"><datalist id="cats">${cats.map(c => `<option value="${esc(c)}">`).join('')}</datalist></div>
-          <div class="field"><label>Nome</label><input name="name" required></div>
-          <div class="field"><label>Descrição</label><input name="desc"></div>
-          <div class="field"><label>Preço (R$)</label><input type="number" step="0.5" min="0" name="price" required></div>
-          <div class="field"><label>Ícone</label><input name="e" value="🍿" maxlength="4"></div>
+    <!-- TELA: BOMBONIERE -->
+    <section id="tela-bomboniere" class="d-none">
+      <div class="d-flex justify-content-between flex-wrap gap-3 align-items-end mb-4">
+        <div>
+          <p class="rotulo mb-1">Loja</p>
+          <h2 class="h3 mb-0">Bomboniere</h2>
         </div>
-        <button class="btn btn-gold" type="submit">Cadastrar produto</button>
-      </form></div>`;
-}
+        <div class="btn-group" id="filtros-categorias"></div>
+      </div>
+      <div class="row g-4 mb-4" id="lista-produtos"></div>
+      <div class="cartao">
+        <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <span id="resumo-bomb-texto"></span>
+          <button class="btn btn-danger" data-tela="checkout"><span class="ico-slot" data-icone="cart"></span> Ir para o resumo</button>
+        </div>
+      </div>
+    </section>
 
-/* ============ AÇÕES ============ */
-function doLogin(nome, perfil) {
-  startSession(nome, perfil);
-  ui.loginErr = '';
-  ui.draft = { nome: '', email: '', user: '' };
-  toast(`Bem-vindo, ${nome}!`);
-  location.hash = perfil === 'master' ? '#/master' : '#/catalogo';
-  render();
-}
+    <!-- TELA: RESUMO / CHECKOUT -->
+    <section id="tela-checkout" class="d-none">
+      <p class="rotulo mb-1">Pedido</p>
+      <h2 class="h3 mb-4">Resumo da Compra</h2>
+      <div id="area-resumo" class="row g-4">
+        <div class="col-lg-7">
+          <div class="cartao"><div class="card-body p-4" id="resumo-conteudo"></div></div>
+        </div>
+        <div class="col-lg-5">
+          <div class="cartao"><div class="card-body p-4">
+            <div id="resumo-totais"></div>
+            <button class="btn btn-danger w-100 mt-4" id="btn-finalizar"><span class="ico-slot" data-icone="check"></span> Finalizar compra</button>
+            <button class="btn btn-outline-light w-100 mt-2" data-tela="bomboniere">Voltar à bomboniere</button>
+          </div></div>
+        </div>
+      </div>
+      <div id="area-comprovante" class="d-none">
+        <div class="mx-auto" style="max-width: 560px;">
+          <div class="ingresso" id="comprovante-conteudo"></div>
+        </div>
+      </div>
+    </section>
 
-function logout() {
-  endSession();
-  ui.lastOrder = null; ui.showOrders = false; ui.mtab = 'dash'; ui.editMovie = null; ui.loginErr = '';
-  location.hash = '#/login';
-  render();
-  toast('Você saiu da sua conta.');
-}
+    <!-- TELA: MEUS INGRESSOS -->
+    <section id="tela-ingressos" class="d-none">
+      <p class="rotulo mb-1">Histórico</p>
+      <h2 class="h3 mb-4">Meus Ingressos</h2>
+      <div class="row g-4" id="lista-ingressos"></div>
+    </section>
 
-function finalize() {
-  const c = getCart(), t = totals(c);
-  if (!t.count) return;
-  let info = null;
-  if (c.seats.length) {
-    info = sessionInfo(c.sessionId);
-    if (!info) return toast('Sessão inválida. Escolha novamente.', 'danger');
-    const taken = new Set(db.occupied[c.sessionId] || []);
-    const conflict = c.seats.filter(s => taken.has(s));
-    if (conflict.length) {
-      c.seats = c.seats.filter(s => !taken.has(s));
-      setCart(c);
-      toast(`Os assentos ${conflict.join(', ')} acabaram de ser reservados. Escolha outros.`, 'danger');
-      location.hash = '#/sala/' + c.sessionId;
-      return;
+    <!-- TELA: PAINEL MASTER -->
+    <section id="tela-master" class="d-none">
+      <p class="rotulo mb-1">Administração</p>
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4"><h2 class="h3 mb-0">Painel do Master</h2><button class="btn btn-outline-danger btn-sm" id="btn-resetar"><span class="ico-slot" data-icone="trash"></span> Resetar Banco (localStorage)</button></div>
+      <ul class="nav nav-pills gap-2 mb-4" id="menu-master">
+        <li class="nav-item"><button class="nav-link" data-acao="aba" data-aba="dashboard">Resumo</button></li>
+        <li class="nav-item"><button class="nav-link" data-acao="aba" data-aba="filmes"><span class="ico-slot" data-icone="film"></span> Filmes</button></li>
+        <li class="nav-item"><button class="nav-link" data-acao="aba" data-aba="sessoes"><span class="ico-slot" data-icone="calendar"></span> Sessões</button></li>
+        <li class="nav-item"><button class="nav-link" data-acao="aba" data-aba="precos"><span class="ico-slot" data-icone="tag"></span> Preços</button></li>
+        <li class="nav-item"><button class="nav-link" data-acao="aba" data-aba="produtos"><span class="ico-slot" data-icone="cup"></span> Bomboniere</button></li>
+      </ul>
+
+      <!-- Resumo -->
+      <div id="painel-dashboard" class="row g-4">
+        <div class="col-md-4"><div class="cartao p-4 h-100">
+          <div class="d-flex justify-content-between align-items-start">
+            <div><p class="rotulo mb-2">Filmes em cartaz</p><div class="kpi-valor" id="dash-filmes">0</div></div>
+            <div class="kpi-icone"><span class="ico-slot" data-icone="film"></span></div>
+          </div>
+        </div></div>
+        <div class="col-md-4"><div class="cartao p-4 h-100">
+          <div class="d-flex justify-content-between align-items-start">
+            <div><p class="rotulo mb-2">Ingressos vendidos</p><div class="kpi-valor" id="dash-ingressos">0</div></div>
+            <div class="kpi-icone"><span class="ico-slot" data-icone="ticket"></span></div>
+          </div>
+        </div></div>
+        <div class="col-md-4"><div class="cartao p-4 h-100">
+          <div class="d-flex justify-content-between align-items-start">
+            <div><p class="rotulo mb-2">Faturamento estimado</p><div class="kpi-valor" id="dash-faturamento">R$ 0,00</div></div>
+            <div class="kpi-icone"><span class="ico-slot" data-icone="cash"></span></div>
+          </div>
+        </div></div>
+      </div>
+
+      <!-- Filmes -->
+      <div id="painel-filmes" class="d-none">
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="cartao"><div class="card-body p-3">
+              <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                  <thead><tr><th>Título</th><th>Gênero</th><th>Duração</th><th>Class.</th><th>Em cartaz</th><th></th></tr></thead>
+                  <tbody id="tabela-filmes"></tbody>
+                </table>
+              </div>
+            </div></div>
+          </div>
+          <div class="col-lg-5">
+            <div class="cartao p-4">
+              <h3 class="h6 mb-3" id="filme-form-titulo">Novo filme</h3>
+              <form id="form-filme" novalidate>
+                <input type="hidden" id="filme-id">
+                <div class="mb-2"><label class="form-label small" for="filme-titulo">Título</label><input class="form-control form-control-sm" id="filme-titulo" required></div>
+                <div class="row g-2 mb-2">
+                  <div class="col"><label class="form-label small" for="filme-genero">Gênero</label><input class="form-control form-control-sm" id="filme-genero" required></div>
+                  <div class="col"><label class="form-label small" for="filme-duracao">Duração (min)</label><input type="number" min="1" class="form-control form-control-sm" id="filme-duracao" required></div>
+                </div>
+                <div class="mb-2">
+                  <label class="form-label small" for="filme-classificacao">Classificação indicativa</label>
+                  <select class="form-select form-select-sm" id="filme-classificacao">
+                    <option value="L">L</option><option value="12">12</option><option value="14">14</option><option value="16">16</option>
+                  </select>
+                </div>
+                <div class="mb-3"><label class="form-label small" for="filme-sinopse">Sinopse</label><textarea class="form-control form-control-sm" id="filme-sinopse" rows="3" required></textarea></div>
+                <div class="mb-3"><label class="form-label small" for="filme-imagem">URL da imagem / pôster (opcional)</label><input type="url" class="form-control form-control-sm" id="filme-imagem" placeholder="https://..."></div>
+                <button type="submit" class="btn btn-danger btn-sm">Salvar filme</button>
+                <button type="button" class="btn btn-outline-light btn-sm d-none" id="btn-cancelar-filme">Cancelar edição</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sessões -->
+      <div id="painel-sessoes" class="d-none">
+        <div class="row g-4">
+          <div class="col-lg-7">
+            <div class="cartao"><div class="card-body p-3">
+              <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                  <thead><tr><th>Filme</th><th>Sala</th><th>Data e hora</th><th>Ocupados</th><th></th></tr></thead>
+                  <tbody id="tabela-sessoes"></tbody>
+                </table>
+              </div>
+            </div></div>
+          </div>
+          <div class="col-lg-5">
+            <div class="cartao p-4">
+              <h3 class="h6 mb-3">Nova sessão</h3>
+              <form id="form-sessao" novalidate>
+                <div class="mb-2"><label class="form-label small" for="sessao-filme">Filme</label><select class="form-select form-select-sm" id="sessao-filme"></select></div>
+                <div class="mb-2"><label class="form-label small" for="sessao-sala">Sala</label>
+                  <select class="form-select form-select-sm" id="sessao-sala"><option value="1">Sala 1</option><option value="2">Sala 2</option><option value="3">Sala 3</option></select>
+                </div>
+                <div class="row g-2 mb-3">
+                  <div class="col"><label class="form-label small" for="sessao-data">Data</label><input type="date" class="form-control form-control-sm" id="sessao-data" value="2026-11-24" required></div>
+                  <div class="col"><label class="form-label small" for="sessao-hora">Horário</label><input type="time" class="form-control form-control-sm" id="sessao-hora" value="20:00" required></div>
+                </div>
+                <button type="submit" class="btn btn-danger btn-sm">Adicionar sessão</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preços -->
+      <div id="painel-precos" class="d-none">
+        <div class="cartao p-4" style="max-width: 480px;">
+          <h3 class="h6 mb-3">Preços dos ingressos</h3>
+          <form id="form-precos" novalidate>
+            <div class="mb-2"><label class="form-label small" for="input-preco-inteira">Inteira (R$)</label><input type="number" step="0.5" min="0" class="form-control form-control-sm" id="input-preco-inteira" required></div>
+            <div class="mb-2"><label class="form-label small" for="input-preco-meia">Meia-entrada (R$)</label><input type="number" step="0.5" min="0" class="form-control form-control-sm" id="input-preco-meia"></div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="input-preco-auto">
+              <label class="form-check-label small" for="input-preco-auto">Calcular meia-entrada automaticamente (50% da inteira)</label>
+            </div>
+            <button type="submit" class="btn btn-danger btn-sm">Salvar preços</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Bomboniere -->
+      <div id="painel-produtos" class="d-none">
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="cartao"><div class="card-body p-3">
+              <div class="table-responsive">
+                <table class="table table-sm align-middle mb-0">
+                  <thead><tr><th>Nome</th><th>Categoria</th><th>Preço (R$)</th><th>Disponível</th><th></th></tr></thead>
+                  <tbody id="tabela-produtos"></tbody>
+                </table>
+              </div>
+            </div></div>
+          </div>
+          <div class="col-lg-4">
+            <div class="cartao p-4">
+              <h3 class="h6 mb-3">Novo produto</h3>
+              <form id="form-produto" novalidate>
+                <div class="mb-2"><label class="form-label small" for="prod-categoria">Categoria</label><input class="form-control form-control-sm" id="prod-categoria" placeholder="Ex.: Doces"></div>
+                <div class="mb-2"><label class="form-label small" for="prod-nome">Nome</label><input class="form-control form-control-sm" id="prod-nome" required></div>
+                <div class="mb-2"><label class="form-label small" for="prod-descricao">Descrição</label><input class="form-control form-control-sm" id="prod-descricao"></div>
+                <div class="mb-3"><label class="form-label small" for="prod-preco">Preço (R$)</label><input type="number" step="0.5" min="0" class="form-control form-control-sm" id="prod-preco" required></div>
+                <button type="submit" class="btn btn-danger btn-sm">Cadastrar produto</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+
+    /* ===== Pôsteres SVG (Data URI) e ícones SVG inline ===== */
+
+    // Converte um SVG em Data URI para uso em <img>
+    function uriSvg(svg) {
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     }
-  }
-  const seats = [...c.seats].sort();
-  const order = {
-    code: 'CF' + Date.now().toString(36).toUpperCase().slice(-4) + Math.random().toString(36).slice(2, 5).toUpperCase(),
-    title: info ? info.movie.title : 'Bomboniere (avulso)',
-    detail: info ? `${info.room.name} · ${fmtDate(info.session.date)} às ${info.session.time}` : 'Retirada no balcão',
-    cliente: session.nome,
-    seats, tipo: c.tipo, total: t.total,
-    items: Object.entries(c.items).filter(([, q]) => q > 0).map(([id, q]) => ({ name: (db.products.find(p => p.id === id) || { name: 'Item removido' }).name, qty: q })),
-    createdAt: new Date().toISOString()
-  };
-  if (info) db.occupied[c.sessionId] = [...(db.occupied[c.sessionId] || []), ...seats];
-  db.orders.push(order);
-  setCart(emptyCart());
-  ui.lastOrder = order;
-  commit();
-  toast('Compra finalizada com sucesso!');
-  location.hash = '#/checkout';
-}
 
-document.addEventListener('click', e => {
-  if (e.target.id === 'ov') { ui.showOrders = false; render(); return; }
-  const el = e.target.closest('[data-act]');
-  if (!el) return;
-  const a = el.dataset.act, id = el.dataset.id, v = el.dataset.v;
-  switch (a) {
-    case 'ltab': ui.ltab = v; ui.loginErr = ''; render(); break;
-    case 'demo': doLogin('Visitante', 'cliente'); break;
-    case 'logout': logout(); break;
-    case 'orders': ui.showOrders = true; render(); break;
-    case 'closeOrders': ui.showOrders = false; render(); break;
-    case 'seat': {
-      const c = getCart();
-      if (c.seats.includes(id)) c.seats = c.seats.filter(s => s !== id);
-      else if (c.seats.length >= 10) { toast('Limite de 10 assentos por compra.', 'danger'); return; }
-      else c.seats.push(id);
-      setCart(c); render(); break;
+    // Gerador pseudoaleatório com semente fixa: o desenho sai sempre igual
+    function criarAleatorio(semente) {
+      let s = semente;
+      return function () {
+        s = (s * 16807) % 2147483647;
+        return s / 2147483647;
+      };
     }
-    case 'tipo': { const c = getCart(); c.tipo = v; setCart(c); render(); break; }
-    case 'clear': { const c = getCart(); c.seats = []; setCart(c); render(); break; }
-    case 'qty': {
-      const c = getCart();
-      const n = Math.max(0, (c.items[id] || 0) + Number(el.dataset.d));
-      if (n) c.items[id] = n; else delete c.items[id];
-      setCart(c); render(); break;
-    }
-    case 'cat': ui.cat = v; render(); break;
-    case 'finish': finalize(); break;
-    case 'mtab': ui.mtab = v; ui.editMovie = null; render(); break;
-    case 'newMovie': ui.editMovie = 'new'; ui.mtab = 'filmes'; render(); break;
-    case 'editMovie': ui.editMovie = id; ui.mtab = 'filmes'; render(); break;
-    case 'cancelEdit': ui.editMovie = null; render(); break;
-    case 'delMovie': {
-      if (!confirm('Remover este filme e todas as suas sessões?')) break;
-      const sids = db.sessions.filter(s => s.movieId === id).map(s => s.id);
-      db.movies = db.movies.filter(m => m.id !== id);
-      db.sessions = db.sessions.filter(s => s.movieId !== id);
-      sids.forEach(s => delete db.occupied[s]);
-      ui.editMovie = null; commit(); toast('Filme removido.'); break;
-    }
-    case 'resetSess': delete db.occupied[id]; commit(); toast('Assentos liberados.'); break;
-    case 'delSess': {
-      if (!confirm('Remover esta sessão?')) break;
-      db.sessions = db.sessions.filter(s => s.id !== id); delete db.occupied[id]; commit(); break;
-    }
-    case 'delProd': {
-      if (!confirm('Remover este produto?')) break;
-      db.products = db.products.filter(p => p.id !== id); commit(); break;
-    }
-  }
-});
 
-document.addEventListener('change', e => {
-  const el = e.target.closest('[data-chg]');
-  if (!el) return;
-  const k = el.dataset.chg, id = el.dataset.id;
-  if (k === 'toggleMovie') { db.movies.find(m => m.id === id).ativo = el.checked; commit(); return; }
-  const p = db.products.find(x => x.id === id);
-  if (!p) return;
-  if (k === 'pname') p.name = el.value.trim() || p.name;
-  if (k === 'pprice') p.price = Math.max(0, Number(el.value) || 0);
-  if (k === 'pactive') p.active = el.checked;
-  commit(); toast('Produto atualizado.');
-});
+    const SVG_NS = 'xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 450"';
 
-document.addEventListener('submit', e => {
-  e.preventDefault();
-  const f = e.target, kind = f.dataset.form;
-  const g = n => (f.elements.namedItem(n)?.value ?? '');
+    function svgInterestelar() {
+      const r = criarAleatorio(7);
+      let estrelas = '';
+      for (let i = 0; i < 110; i++) {
+        estrelas += `<circle cx="${(r() * 300).toFixed(1)}" cy="${(r() * 450).toFixed(1)}" r="${(r() * 1.3 + 0.3).toFixed(2)}" fill="#fff" opacity="${(r() * 0.7 + 0.3).toFixed(2)}"/>`;
+      }
+      return uriSvg(`<svg ${SVG_NS}>
+        <defs>
+          <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#03050a"/><stop offset="1" stop-color="#0d1b33"/></linearGradient>
+          <radialGradient id="brilho" cx="0.5" cy="0.5" r="0.5"><stop offset="0.5" stop-color="#ffe2a0"/><stop offset="0.6" stop-color="#ff9a3c" stop-opacity="0.45"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient>
+          <radialGradient id="planeta" cx="0.35" cy="0.35" r="0.7"><stop offset="0" stop-color="#7fb6e6"/><stop offset="1" stop-color="#0b2540"/></radialGradient>
+        </defs>
+        <rect width="300" height="450" fill="url(#ceu)"/>
+        ${estrelas}
+        <circle cx="150" cy="170" r="120" fill="url(#brilho)"/>
+        <circle cx="150" cy="170" r="62" fill="#000"/>
+        <ellipse cx="150" cy="170" rx="95" ry="20" fill="none" stroke="#ffd27a" stroke-width="4" opacity="0.85" transform="rotate(-12 150 170)"/>
+        <circle cx="232" cy="332" r="26" fill="url(#planeta)"/>
+        <ellipse cx="232" cy="332" rx="50" ry="9" fill="none" stroke="#9ec5ea" stroke-width="2" opacity="0.5" transform="rotate(-18 232 332)"/>
+      </svg>`);
+    }
 
-  if (kind === 'login-cliente') {
-    const nome = g('nome').trim(), email = g('email').trim();
-    ui.draft = { ...ui.draft, nome, email };
-    if (nome.length < 2) { ui.loginErr = 'Informe um nome com pelo menos 2 caracteres.'; return render(); }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { ui.loginErr = 'Informe um e-mail válido.'; return render(); }
-    return doLogin(nome, 'cliente');
-  }
-  if (kind === 'login-master') {
-    const user = g('user').trim(), pass = g('pass');
-    ui.draft = { ...ui.draft, user };
-    if (!user || !pass) { ui.loginErr = 'Preencha usuário e senha.'; return render(); }
-    if (user === 'admin' && pass === '1234') return doLogin('Admin Master', 'master');
-    ui.loginErr = 'Usuário ou senha incorretos. Verifique os dados e tente novamente.';
-    return render();
-  }
-  if (kind === 'movie') {
-    const data = {
-      title: g('title').trim(), genre: g('genre').trim(), duration: Number(g('duration')) || 1,
-      rating: g('rating').trim() || 'Livre', synopsis: g('synopsis').trim(), ativo: f.elements.namedItem('ativo').checked
+    function svgBatman() {
+      const predios = [[0, 300, 44], [46, 250, 38], [88, 330, 30], [122, 220, 26], [152, 300, 40], [196, 260, 36], [236, 320, 30], [270, 280, 30]];
+      const r = criarAleatorio(21);
+      let janelas = '';
+      predios.forEach(([x, y, w]) => {
+        for (let j = y + 14; j < 440; j += 18) {
+          for (let i = x + 6; i < x + w - 6; i += 9) {
+            if (r() > 0.6) janelas += `<rect x="${i}" y="${j}" width="3" height="5" fill="#f5c518" opacity="0.8"/>`;
+          }
+        }
+      });
+      const corpo = predios.map(([x, y, w]) => `<rect x="${x}" y="${y}" width="${w}" height="${450 - y}" fill="#06070b"/>`).join('');
+      return uriSvg(`<svg ${SVG_NS}>
+        <defs>
+          <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05070d"/><stop offset="1" stop-color="#1c2538"/></linearGradient>
+          <linearGradient id="feixe" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1b5" stop-opacity="0.5"/><stop offset="1" stop-color="#fff1b5" stop-opacity="0"/></linearGradient>
+          <radialGradient id="sinal" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#ffe9a0" stop-opacity="0.9"/><stop offset="1" stop-color="#ffe9a0" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="300" height="450" fill="url(#ceu)"/>
+        <ellipse cx="60" cy="90" rx="90" ry="22" fill="#2a3346" opacity="0.55"/>
+        <ellipse cx="230" cy="60" rx="110" ry="26" fill="#2a3346" opacity="0.45"/>
+        <ellipse cx="150" cy="150" rx="140" ry="18" fill="#222b3d" opacity="0.5"/>
+        <circle cx="210" cy="110" r="70" fill="url(#sinal)"/>
+        <path d="M0 -4 C-4 -10 -10 -10 -14 -6 L-22 -12 L-18 0 C-22 2 -30 6 -34 14 C-22 10 -14 10 -10 8 C-6 14 -4 18 0 20 C4 18 6 14 10 8 C14 10 22 10 34 14 C30 6 22 2 18 0 L22 -12 L14 -6 C10 -10 4 -10 0 -4 Z" transform="translate(210 110) scale(0.9)" fill="#06070b"/>
+        <polygon points="120,0 185,0 265,450 35,450" fill="url(#feixe)"/>
+        ${corpo}
+        ${janelas}
+        <polygon points="122,220 135,160 148,220" fill="#06070b"/>
+        <polygon points="88,330 103,270 118,330" fill="#06070b"/>
+      </svg>`);
+    }
+
+    function svgDuna() {
+      return uriSvg(`<svg ${SVG_NS}>
+        <defs>
+          <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f9d28a"/><stop offset="0.55" stop-color="#f08a3e"/><stop offset="1" stop-color="#c4501e"/></linearGradient>
+          <radialGradient id="sol" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fffbe6"/><stop offset="0.6" stop-color="#ffe7a8" stop-opacity="0.9"/><stop offset="1" stop-color="#ffe7a8" stop-opacity="0"/></radialGradient>
+          <linearGradient id="duna1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0944c"/><stop offset="1" stop-color="#b9592a"/></linearGradient>
+          <linearGradient id="duna2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b8602f"/><stop offset="1" stop-color="#8a3d1c"/></linearGradient>
+          <linearGradient id="duna3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8a3d1c"/><stop offset="1" stop-color="#4a1d0c"/></linearGradient>
+        </defs>
+        <rect width="300" height="450" fill="url(#ceu)"/>
+        <circle cx="95" cy="232" r="62" fill="url(#sol)"/>
+        <circle cx="95" cy="232" r="20" fill="#fff8e0"/>
+        <circle cx="212" cy="222" r="34" fill="url(#sol)"/>
+        <circle cx="212" cy="222" r="13" fill="#ffe9b0"/>
+        <path d="M0 262 Q75 220 150 258 T300 240 L300 450 L0 450Z" fill="url(#duna1)"/>
+        <path d="M0 305 Q90 268 170 302 T300 292 L300 450 L0 450Z" fill="url(#duna2)"/>
+        <path d="M0 355 Q110 322 200 356 T300 346 L300 450 L0 450Z" fill="url(#duna3)"/>
+      </svg>`);
+    }
+
+    function svgOppenheimer() {
+      const r = criarAleatorio(99);
+      let particulas = '';
+      for (let i = 0; i < 70; i++) {
+        const a = r() * Math.PI * 2;
+        const d = 40 + r() * 120;
+        const x = 150 + Math.cos(a) * d;
+        const y = 210 + Math.sin(a) * d * 0.8;
+        const cor = r() > 0.5 ? '#ffd23f' : '#ff8a1e';
+        particulas += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r() * 2 + 0.6).toFixed(2)}" fill="${cor}" opacity="${(r() * 0.6 + 0.3).toFixed(2)}"/>`;
+      }
+      return uriSvg(`<svg ${SVG_NS}>
+        <defs>
+          <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05030a"/><stop offset="1" stop-color="#140b10"/></linearGradient>
+          <radialGradient id="explosao" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#fff6c2"/><stop offset="0.18" stop-color="#ffd23f"/><stop offset="0.4" stop-color="#ff8a1e"/><stop offset="0.65" stop-color="#e50914" stop-opacity="0.65"/><stop offset="1" stop-color="#3a0a0a" stop-opacity="0"/></radialGradient>
+          <filter id="desfoque" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="9"/></filter>
+        </defs>
+        <rect width="300" height="450" fill="url(#ceu)"/>
+        <circle cx="150" cy="210" r="150" fill="url(#explosao)"/>
+        ${particulas}
+        <ellipse cx="150" cy="390" rx="170" ry="60" fill="#1a1416" opacity="0.9" filter="url(#desfoque)"/>
+        <ellipse cx="80" cy="420" rx="120" ry="50" fill="#0e0b0d" filter="url(#desfoque)"/>
+        <ellipse cx="230" cy="340" rx="90" ry="40" fill="#241a1c" opacity="0.8" filter="url(#desfoque)"/>
+      </svg>`);
+    }
+
+    function svgDivertida() {
+      const esferas = [
+        { x: 80, y: 150, r: 42, cor: '#ffd23f' },
+        { x: 222, y: 128, r: 46, cor: '#3a86ff' },
+        { x: 150, y: 262, r: 54, cor: '#8338ec' },
+        { x: 70, y: 352, r: 32, cor: '#06d6a0' },
+        { x: 232, y: 340, r: 38, cor: '#ef476f' }
+      ];
+      const corpos = esferas.map(e => `
+        <circle cx="${e.x}" cy="${e.y}" r="${(e.r * 1.35).toFixed(1)}" fill="${e.cor}" opacity="0.35" filter="url(#brilhoEsfera)"/>
+        <circle cx="${e.x}" cy="${e.y}" r="${e.r}" fill="${e.cor}"/>
+        <circle cx="${(e.x - e.r * 0.3).toFixed(1)}" cy="${(e.y - e.r * 0.35).toFixed(1)}" r="${(e.r * 0.28).toFixed(1)}" fill="#fff" opacity="0.6"/>`).join('');
+      return uriSvg(`<svg ${SVG_NS}>
+        <defs>
+          <radialGradient id="fundo" cx="0.5" cy="0.4" r="0.8"><stop offset="0" stop-color="#1f2347"/><stop offset="1" stop-color="#07080f"/></radialGradient>
+          <filter id="brilhoEsfera" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="8"/></filter>
+        </defs>
+        <rect width="300" height="450" fill="url(#fundo)"/>
+        ${corpos}
+      </svg>`);
+    }
+
+    function svgHomemAranha() {
+      const r = criarAleatorio(55);
+      let predios = '';
+      let janelas = '';
+      let x = 0;
+      while (x < 300) {
+        const w = 28 + Math.floor(r() * 30);
+        const h = 170 + Math.floor(r() * 230);
+        const y = 450 - h;
+        const tom = r() > 0.5 ? '#121a3a' : '#0c1230';
+        predios += `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${tom}"/>`;
+        for (let j = y + 10; j < 440; j += 14) {
+          for (let i = x + 5; i < x + w - 5; i += 8) {
+            if (r() > 0.72) janelas += `<rect x="${i}" y="${j}" width="3" height="5" fill="${r() > 0.5 ? '#ffe39a' : '#9fd3ff'}" opacity="0.85"/>`;
+          }
+        }
+        x += w + 2;
+      }
+      // Fios de teia partindo de um ponto central
+      const pontos = [[0, 0], [60, 0], [150, 0], [240, 0], [300, 0], [300, 120], [300, 260], [0, 120], [0, 260]];
+      const teia = pontos.map(([px, py], i) =>
+        `<line x1="150" y1="160" x2="${px}" y2="${py}" stroke="${i % 2 ? '#2b6fd6' : '#e50914'}" stroke-width="0.8" opacity="0.4"/>`).join('');
+      return uriSvg(`<svg ${SVG_NS}>
+        <defs>
+          <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0b0f2a"/><stop offset="1" stop-color="#1b0a14"/></linearGradient>
+          <linearGradient id="vinheta" x1="0" y1="0" x2="0" y2="1"><stop offset="0.6" stop-color="#05060c" stop-opacity="0"/><stop offset="1" stop-color="#05060c" stop-opacity="0.9"/></linearGradient>
+          <radialGradient id="aura" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#e50914" stop-opacity="0.35"/><stop offset="1" stop-color="#e50914" stop-opacity="0"/></radialGradient>
+        </defs>
+        <rect width="300" height="450" fill="url(#ceu)"/>
+        ${predios}
+        ${janelas}
+        ${teia}
+        <circle cx="150" cy="160" r="40" fill="url(#aura)"/>
+        <rect width="300" height="450" fill="url(#vinheta)"/>
+      </svg>`);
+    }
+
+    function svgPadrao() {
+      return uriSvg(`<svg ${SVG_NS}>
+        <defs><linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c2130"/><stop offset="1" stop-color="#0b0d12"/></linearGradient></defs>
+        <rect width="300" height="450" fill="url(#fundo)"/>
+        <rect x="70" y="150" width="160" height="120" rx="8" fill="none" stroke="#f5c518" stroke-width="3" opacity="0.8"/>
+        <line x1="95" y1="150" x2="95" y2="270" stroke="#f5c518" stroke-width="2" opacity="0.6"/>
+        <line x1="205" y1="150" x2="205" y2="270" stroke="#f5c518" stroke-width="2" opacity="0.6"/>
+        <polygon points="130,185 130,235 170,210" fill="#e50914"/>
+        <text x="150" y="330" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" letter-spacing="4" fill="#9aa3b5">CINEMA</text>
+      </svg>`);
+    }
+
+    // Caminhos dos ícones (traço simples, estilo linha)
+    const CAMINHOS_ICONES = {
+      film: '<rect x="2" y="2" width="20" height="20" rx="2"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/>',
+      cup: '<path d="M5 8h14l-1.5 12a2 2 0 0 1-2 2H8.5a2 2 0 0 1-2-2L5 8z"/><path d="M8 8l1-5h6l1 5"/>',
+      bag: '<path d="M5 8h14l-1 13H6L5 8z"/><path d="M9 8a3 3 0 0 1 6 0"/>',
+      gift: '<rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18"/><path d="M12 8c-2-4-6-4-6-1s4 1 6 1zM12 8c2-4 6-4 6-1s-4 1-6 1z"/>',
+      tag: '<path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.5"/>',
+      cart: '<circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/>',
+      ticket: '<path d="M2 9a3 3 0 0 0 0 6v4h20v-4a3 3 0 0 1 0-6V5H2z"/><line x1="15" y1="5" x2="15" y2="19" stroke-dasharray="2 2"/>',
+      lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>',
+      user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+      logout: '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/>',
+      chart: '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>',
+      calendar: '<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>',
+      pencil: '<path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/>',
+      trash: '<polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6M9 6V4h6v2"/>',
+      minus: '<line x1="5" y1="12" x2="19" y2="12"/>',
+      plus: '<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>',
+      arrowLeft: '<line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/>',
+      check: '<circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/>',
+      cash: '<rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/>'
     };
-    const id = g('id');
-    if (id) Object.assign(db.movies.find(m => m.id === id), data);
-    else db.movies.push({ id: uid('m'), colors: PAL[db.movies.length % PAL.length], ...data });
-    ui.editMovie = null; commit(); toast('Filme salvo.'); return;
-  }
-  if (kind === 'session') {
-    db.sessions.push({ id: uid('s'), movieId: g('movie'), roomId: g('room'), date: g('date'), time: g('time') });
-    commit(); toast('Sessão adicionada.'); return;
-  }
-  if (kind === 'prices') {
-    const inteira = Math.max(0, Number(g('inteira')) || 0);
-    const auto = f.elements.namedItem('auto').checked;
-    db.prices = { inteira, autoMeia: auto, meia: auto ? Math.round(inteira * 50) / 100 : Math.max(0, Number(g('meia')) || 0) };
-    commit(); toast('Preços atualizados.'); return;
-  }
-  if (kind === 'product') {
-    db.products.push({ id: uid('p'), cat: g('cat').trim() || 'Outros', name: g('name').trim(), desc: g('desc').trim(), price: Math.max(0, Number(g('price')) || 0), e: g('e').trim() || '🍿', active: true });
-    commit(); toast('Produto cadastrado.');
-  }
-});
 
-window.addEventListener('hashchange', render);
-render();
-</script>
+    // Devolve um SVG inline pronto para inserir no HTML
+    function svgIcone(nome) {
+      return `<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${CAMINHOS_ICONES[nome] || ''}</svg>`;
+    }
+
+    // Preenche os espaços de ícone que estão no HTML fixo
+    function hidratarIcones() {
+      document.querySelectorAll('[data-icone]').forEach(el => {
+        el.innerHTML = svgIcone(el.dataset.icone);
+      });
+    }
+
+
+    const FILEIRAS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+    const LIMITE_ASSENTOS = 10;
+    const CORES_POSTER = ['#1b3a5c', '#2b2b2b', '#7a4a1f', '#4a3b2a', '#2e6fb0', '#9b1c1c'];
+    const IMAGEM_PADRAO = svgPadrao();
+    const TELAS = ['login', 'filmes', 'sala', 'bomboniere', 'checkout', 'ingressos', 'master'];
+
+    // Ícones das categorias da bomboniere
+    const ICONES_CATEGORIA = { 'Pipocas': 'bag', 'Bebidas': 'cup', 'Combos': 'gift', 'Doces': 'tag' };
+
+    // Dados iniciais, usados quando não há nada salvo
+    const DADOS_PADRAO = {
+      filmes: [
+        { id: '1', titulo: 'Interestelar', genero: 'Ficção científica', duracao: 169, classificacao: '12', cor: '#1b3a5c', imagem: svgInterestelar(), emCartaz: true,
+          sinopse: 'Um grupo de exploradores atravessa um buraco de minhoca em busca de um novo lar para a humanidade.' },
+        { id: '2', titulo: 'Batman', genero: 'Ação', duracao: 176, classificacao: '14', cor: '#2b2b2b', imagem: svgBatman(), emCartaz: true,
+          sinopse: 'Em Gotham, o Batman investiga uma série de crimes que leva à elite da cidade.' },
+        { id: '3', titulo: 'Duna: Parte Dois', genero: 'Ficção científica', duracao: 166, classificacao: '12', cor: '#7a4a1f', imagem: svgDuna(), emCartaz: true,
+          sinopse: 'Paul Atreides se une aos Fremen de Arrakis para vingar sua família e enfrentar o império.' },
+        { id: '4', titulo: 'Oppenheimer', genero: 'Drama', duracao: 180, classificacao: '16', cor: '#4a3b2a', imagem: svgOppenheimer(), emCartaz: true,
+          sinopse: 'A história do físico J. Robert Oppenheimer e seu papel no desenvolvimento da bomba atômica.' },
+        { id: '5', titulo: 'Divertida Mente 2', genero: 'Animação', duracao: 96, classificacao: 'L', cor: '#2e6fb0', imagem: svgDivertida(), emCartaz: true,
+          sinopse: 'Com a chegada da adolescência, novas emoções passam a comandar a mente de Riley.' },
+        { id: '6', titulo: 'Homem-Aranha: Sem Volta Para Casa', genero: 'Ação', duracao: 148, classificacao: '12', cor: '#9b1c1c', imagem: svgHomemAranha(), emCartaz: true,
+          sinopse: 'Peter Parker pede ajuda ao Doutor Estranho para apagar sua identidade, mas um feitiço abre portas para outros universos.' }
+      ],
+      sessoes: [
+        { id: 's1', filmeId: '1', sala: 1, data: '2026-11-24', hora: '14:00' },
+        { id: 's2', filmeId: '1', sala: 2, data: '2026-11-24', hora: '19:30' },
+        { id: 's3', filmeId: '2', sala: 3, data: '2026-11-24', hora: '16:15' },
+        { id: 's4', filmeId: '3', sala: 1, data: '2026-11-25', hora: '21:00' },
+        { id: 's5', filmeId: '4', sala: 2, data: '2026-11-25', hora: '20:00' },
+        { id: 's6', filmeId: '5', sala: 3, data: '2026-11-24', hora: '13:00' },
+        { id: 's7', filmeId: '6', sala: 1, data: '2026-11-25', hora: '18:30' }
+      ],
+      produtos: [
+        { id: 'p1', categoria: 'Pipocas', nome: 'Pipoca pequena', descricao: 'Balde individual, salgada ou doce.', preco: 14.5, ativo: true },
+        { id: 'p2', categoria: 'Pipocas', nome: 'Pipoca grande', descricao: 'Balde family size.', preco: 22, ativo: true },
+        { id: 'p3', categoria: 'Pipocas', nome: 'Pipoca caramelo', descricao: 'Coberta com calda de caramelo.', preco: 24.9, ativo: true },
+        { id: 'p4', categoria: 'Bebidas', nome: 'Refrigerante 500 ml', descricao: 'Cola, laranja ou limão.', preco: 9, ativo: true },
+        { id: 'p5', categoria: 'Bebidas', nome: 'Água 500 ml', descricao: 'Água mineral sem gás.', preco: 6, ativo: true },
+        { id: 'p6', categoria: 'Bebidas', nome: 'Suco natural', descricao: 'Laranja ou maracujá.', preco: 12, ativo: true },
+        { id: 'p7', categoria: 'Combos', nome: 'Combo casal', descricao: '2 pipocas grandes e 2 refrigerantes.', preco: 49.9, ativo: true },
+        { id: 'p8', categoria: 'Combos', nome: 'Combo solo', descricao: '1 pipoca média e 1 refrigerante.', preco: 32, ativo: true },
+        { id: 'p9', categoria: 'Doces', nome: 'Chocolate ao leite', descricao: 'Barra de 90 g.', preco: 8, ativo: true },
+        { id: 'p10', categoria: 'Doces', nome: 'Mini donut', descricao: 'Porção com 4 unidades.', preco: 11, ativo: true }
+      ],
+      precos: { inteira: 30, meia: 15, meiaAutomatica: true },
+      ocupados: { s1: ['A1', 'A2', 'B5', 'C7', 'C8', 'D12'], s3: ['E3', 'E4', 'F6', 'F7'], s6: ['G1', 'H12'] },
+      pedidos: []
+    };
+
+    // Variáveis de estado
+    let dados;
+    let login;
+    let carrinho;
+    let categoriaProduto = 'Todas';
+    let abaMaster = 'dashboard';
+    let filmeEditando = null;
+    let ultimoPedido = null;
+    let timerAviso = null;
+
+    // ---------- Funções auxiliares ----------
+
+    // Escapa texto digitado pelo usuário antes de colocar no HTML
+    function escapar(texto) {
+      return String(texto ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function formatarMoeda(valor) {
+      return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    // Converte 2026-11-24 em 24/11
+    function formatarData(data) {
+      const partes = data.split('-');
+      return partes[2] + '/' + partes[1];
+    }
+
+    function novoId() {
+      return Date.now().toString(36) + Math.floor(Math.random() * 1000).toString(36);
+    }
+
+    function comparaSessoes(a, b) {
+      return (a.data + a.hora).localeCompare(b.data + b.hora);
+    }
+
+    function mostrarAviso(mensagem, tipo = 'success') {
+      const aviso = document.getElementById('aviso');
+      aviso.className = 'alert alert-flutuante alert-' + tipo;
+      aviso.textContent = mensagem;
+      clearTimeout(timerAviso);
+      timerAviso = setTimeout(() => aviso.classList.add('d-none'), 3000);
+    }
+
+    // ---------- Armazenamento (localStorage com fallback seguro) ----------
+
+    // Chaves do localStorage, organizadas por assunto
+    const CHAVE_FILMES = 'cinema_filmes';
+    const CHAVE_PRECOS = 'cinema_precos';
+    const CHAVE_OCUPADOS = 'cinema_assentos_ocupados';
+    const CHAVE_INGRESSOS = 'cinema_ingressos_comprados';
+    const CHAVE_USUARIO = 'cinema_usuario_logado';
+    const CHAVE_CARRINHO = 'cinema_carrinho';
+    const CHAVE_ANTIGA = 'cinema_sistema_v4';
+    const TODAS_CHAVES = [CHAVE_FILMES, CHAVE_PRECOS, CHAVE_OCUPADOS, CHAVE_INGRESSOS, CHAVE_USUARIO, CHAVE_CARRINHO, CHAVE_ANTIGA];
+
+    // Verifica se o navegador deixa usar o localStorage (o preview pode bloquear)
+    function testarLocalStorage() {
+      try {
+        window.localStorage.setItem('__teste_cinema__', '1');
+        window.localStorage.removeItem('__teste_cinema__');
+        return window.localStorage;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    const armazenamento = testarLocalStorage();
+
+    // Memória temporária: usada só quando o localStorage está bloqueado
+    const memoriaTemporaria = {};
+
+    function lerItem(chave) {
+      try {
+        if (armazenamento) return armazenamento.getItem(chave);
+      } catch (e) { /* cai para a memória temporária */ }
+      return Object.prototype.hasOwnProperty.call(memoriaTemporaria, chave) ? memoriaTemporaria[chave] : null;
+    }
+
+    function gravarItem(chave, texto) {
+      memoriaTemporaria[chave] = texto;
+      try {
+        if (armazenamento) armazenamento.setItem(chave, texto);
+      } catch (e) {
+        mostrarAviso('O navegador não permitiu salvar os dados. Eles valem só até fechar a página.', 'warning');
+      }
+    }
+
+    function removerItem(chave) {
+      delete memoriaTemporaria[chave];
+      try {
+        if (armazenamento) armazenamento.removeItem(chave);
+      } catch (e) { /* ignora */ }
+    }
+
+    // Lê um valor em JSON; se não existir ou estiver corrompido, usa o padrão
+    function lerJSON(chave, padrao) {
+      try {
+        const texto = lerItem(chave);
+        if (texto !== null) return JSON.parse(texto);
+      } catch (e) { /* valor corrompido: usa o padrão */ }
+      return JSON.parse(JSON.stringify(padrao));
+    }
+
+    function gravarJSON(chave, valor) {
+      gravarItem(chave, JSON.stringify(valor));
+    }
+
+    // Carrega todos os dados do sistema; o que não existir recebe o valor padrão
+    function carregarDados() {
+      // Aproveita os dados da versão anterior, se ainda não existirem as chaves novas
+      const antigo = lerItem(CHAVE_FILMES) === null ? lerJSON(CHAVE_ANTIGA, null) : null;
+      const base = antigo || DADOS_PADRAO;
+
+      const filmes = lerJSON(CHAVE_FILMES, { filmes: base.filmes, sessoes: base.sessoes });
+      const precos = lerJSON(CHAVE_PRECOS, {
+        inteira: base.precos.inteira,
+        meia: base.precos.meia,
+        meiaAutomatica: base.precos.meiaAutomatica,
+        produtos: base.produtos
+      });
+
+      return {
+        filmes: filmes.filmes,
+        sessoes: filmes.sessoes,
+        produtos: precos.produtos,
+        precos: { inteira: precos.inteira, meia: precos.meia, meiaAutomatica: precos.meiaAutomatica },
+        ocupados: lerJSON(CHAVE_OCUPADOS, base.ocupados),
+        pedidos: lerJSON(CHAVE_INGRESSOS, base.pedidos)
+      };
+    }
+
+    // Grava cada parte dos dados na sua chave
+    function salvarDados() {
+      gravarJSON(CHAVE_FILMES, { filmes: dados.filmes, sessoes: dados.sessoes });
+      gravarJSON(CHAVE_PRECOS, {
+        inteira: dados.precos.inteira,
+        meia: dados.precos.meia,
+        meiaAutomatica: dados.precos.meiaAutomatica,
+        produtos: dados.produtos
+      });
+      gravarJSON(CHAVE_OCUPADOS, dados.ocupados);
+      gravarJSON(CHAVE_INGRESSOS, dados.pedidos);
+    }
+
+    function carrinhoVazio() {
+      return { sessaoId: null, assentos: [], tipo: 'inteira', itens: {} };
+    }
+
+    function carregarCarrinho() {
+      return { ...carrinhoVazio(), ...lerJSON(CHAVE_CARRINHO, {}) };
+    }
+
+    function salvarCarrinho() {
+      gravarJSON(CHAVE_CARRINHO, carrinho);
+    }
+
+    function carregarLogin() {
+      const usuario = lerJSON(CHAVE_USUARIO, null);
+      return usuario && usuario.nome && usuario.perfil ? usuario : null;
+    }
+
+    // Apaga todos os dados salvos e volta aos filmes e preços originais
+    function resetarBanco() {
+      if (!confirm('Apagar os dados salvos e restaurar os filmes e preços originais?')) return;
+      TODAS_CHAVES.filter(chave => chave !== CHAVE_USUARIO).forEach(removerItem);
+      dados = carregarDados();
+      carrinho = carrinhoVazio();
+      salvarDados();
+      salvarCarrinho();
+      ultimoPedido = null;
+      limparFormFilme();
+      renderizarMaster();
+      mostrarAviso('Banco restaurado para os dados originais.');
+    }
+
+    // ---------- Cálculos ----------
+
+    function sessaoAtual() {
+      return dados.sessoes.find(s => s.id === carrinho.sessaoId) || null;
+    }
+
+    function precoUnitario() {
+      return carrinho.tipo === 'meia' ? dados.precos.meia : dados.precos.inteira;
+    }
+
+    function totalIngressos() {
+      return carrinho.assentos.length * precoUnitario();
+    }
+
+    function quantidadeItens() {
+      return Object.values(carrinho.itens).reduce((soma, q) => soma + q, 0);
+    }
+
+    function totalItens() {
+      return Object.entries(carrinho.itens).reduce((soma, [id, qtd]) => {
+        const produto = dados.produtos.find(p => p.id === id);
+        return soma + (produto ? produto.preco * qtd : 0);
+      }, 0);
+    }
+
+    // Atualiza os textos de resumo em todas as telas
+    function atualizarResumo() {
+      document.getElementById('contador-carrinho').textContent = carrinho.assentos.length + quantidadeItens();
+      document.getElementById('preco-inteira').textContent = formatarMoeda(dados.precos.inteira);
+      document.getElementById('preco-meia').textContent = formatarMoeda(dados.precos.meia);
+      document.getElementById('lista-assentos-escolhidos').textContent =
+        carrinho.assentos.length ? [...carrinho.assentos].sort().join(', ') : 'Nenhum assento escolhido';
+      document.getElementById('subtotal-ingressos').textContent = formatarMoeda(totalIngressos());
+      document.getElementById('resumo-bomb-texto').textContent =
+        quantidadeItens() + ' item(ns) · Total: ' + formatarMoeda(totalIngressos() + totalItens());
+    }
+
+    // ---------- Navegação entre telas ----------
+
+    function atualizarNavbar() {
+      const logado = !!login;
+      document.querySelectorAll('[data-visivel]').forEach(item => {
+        item.classList.toggle('d-none', !logado || item.dataset.visivel !== login.perfil);
+      });
+      document.getElementById('nome-usuario').textContent =
+        logado ? (login.perfil === 'master' ? 'Admin Master' : login.nome) : '';
+      document.getElementById('btn-sair').classList.toggle('d-none', !logado);
+    }
+
+    // Mostra a tela pedida, respeitando o perfil do usuário
+    function irPara(tela) {
+      if (!login) tela = 'login';
+      else if (login.perfil === 'master') tela = 'master';
+      else if (tela === 'login' || tela === 'master') tela = 'filmes';
+
+      if (tela !== 'checkout') ultimoPedido = null;
+
+      TELAS.forEach(t => document.getElementById('tela-' + t).classList.toggle('d-none', t !== tela));
+      document.querySelectorAll('.menu-link').forEach(a => a.classList.toggle('ativo', a.dataset.tela === tela));
+      atualizarNavbar();
+
+      if (tela === 'filmes') renderizarFilmes();
+      if (tela === 'sala') renderizarSala();
+      if (tela === 'bomboniere') renderizarBomboniere();
+      if (tela === 'checkout') renderizarCheckout();
+      if (tela === 'ingressos') renderizarIngressos();
+      if (tela === 'master') renderizarMaster();
+
+      atualizarResumo();
+      window.scrollTo(0, 0);
+    }
+
+    // ---------- Login ----------
+
+    function trocarAbaLogin(aba) {
+      const cliente = aba === 'cliente';
+      document.getElementById('aba-cliente').classList.toggle('ativo', cliente);
+      document.getElementById('aba-master').classList.toggle('ativo', !cliente);
+      document.getElementById('form-cliente').classList.toggle('d-none', !cliente);
+      document.getElementById('form-master').classList.toggle('d-none', cliente);
+      esconderErroLogin();
+    }
+
+    function mostrarErroLogin(mensagem) {
+      const alerta = document.getElementById('alerta-login');
+      alerta.textContent = mensagem;
+      alerta.classList.remove('d-none');
+    }
+
+    function esconderErroLogin() {
+      document.getElementById('alerta-login').classList.add('d-none');
+    }
+
+    function fazerLogin(nome, perfil) {
+      login = { nome: nome, perfil: perfil };
+      gravarJSON(CHAVE_USUARIO, login);
+      document.getElementById('form-cliente').reset();
+      document.getElementById('form-master').reset();
+      mostrarAviso('Bem-vindo, ' + nome + '!');
+      irPara(perfil === 'master' ? 'master' : 'filmes');
+    }
+
+    function sair() {
+      removerItem(CHAVE_USUARIO);
+      login = null;
+      carrinho = carrinhoVazio();
+      salvarCarrinho();
+      ultimoPedido = null;
+      trocarAbaLogin('cliente');
+      irPara('login');
+      mostrarAviso('Você saiu do sistema.');
+    }
+
+    // ---------- Filmes ----------
+
+    function renderizarFilmes() {
+      const lista = document.getElementById('lista-filmes');
+      const emCartaz = dados.filmes.filter(f => f.emCartaz);
+
+      if (emCartaz.length === 0) {
+        lista.innerHTML = '<p class="text-secondary">Nenhum filme em cartaz.</p>';
+        return;
+      }
+
+      lista.innerHTML = emCartaz.map(f => {
+        const sessoes = dados.sessoes.filter(s => s.filmeId === f.id).sort(comparaSessoes);
+        const botoes = sessoes.map(s =>
+          `<button type="button" class="btn-sessao" data-sessao-id="${s.id}">${formatarData(s.data)} · ${s.hora} · Sala ${s.sala}</button>`
+        ).join('') || '<span class="small text-secondary">Sem sessões cadastradas.</span>';
+
+        return `
+          <div class="col-sm-6 col-lg-4 col-xl-3">
+            <div class="cartao cartao-elevado filme-card">
+              <div class="capa"><img src="${escapar(f.imagem || IMAGEM_PADRAO)}" alt="Capa de ${escapar(f.titulo)}" loading="lazy" onerror="this.onerror=null;this.src=IMAGEM_PADRAO">
+                <span class="classificacao class-${escapar(f.classificacao)}">${escapar(f.classificacao)}</span>
+                <div class="capa-info">${escapar(f.genero)} · ${f.duracao} min</div>
+              </div>
+              <div class="card-body">
+                <h3 class="h6 mb-1">${escapar(f.titulo)}</h3>
+                
+                <p class="small mb-3">${escapar(f.sinopse)}</p>
+                <div class="d-flex flex-wrap gap-2">${botoes}</div>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function abrirSala(sessaoId) {
+      if (carrinho.sessaoId !== sessaoId) {
+        carrinho.sessaoId = sessaoId;
+        carrinho.assentos = [];
+      }
+      salvarCarrinho();
+      irPara('sala');
+    }
+
+    // ---------- Sala ----------
+
+    function renderizarSala() {
+      const sessao = sessaoAtual();
+      const mapa = document.getElementById('mapa-assentos');
+
+      document.getElementById('radio-inteira').checked = carrinho.tipo === 'inteira';
+      document.getElementById('radio-meia').checked = carrinho.tipo === 'meia';
+
+      if (!sessao) {
+        document.getElementById('sala-titulo').textContent = 'Nenhuma sessão selecionada';
+        document.getElementById('sala-info').textContent = '';
+        mapa.innerHTML = '<p class="text-secondary">Escolha uma sessão em Filmes em Cartaz.</p>';
+        atualizarResumo();
+        return;
+      }
+
+      const filme = dados.filmes.find(f => f.id === sessao.filmeId);
+      document.getElementById('sala-titulo').textContent = 'Escolha seus assentos';
+      document.getElementById('sala-info').textContent =
+        `${filme.titulo} · Sala ${sessao.sala} · ${formatarData(sessao.data)} às ${sessao.hora} · Classificação ${filme.classificacao}`;
+
+      const ocupados = dados.ocupados[sessao.id] || [];
+      let html = '';
+
+      FILEIRAS.forEach(letra => {
+        html += '<div class="fileira"><span class="fileira-letra">' + letra + '</span>';
+        for (let n = 1; n <= 12; n++) {
+          if (n === 5 || n === 9) html += '<span class="corredor"></span>';
+          const codigo = letra + n;
+          let classe = '';
+          if (ocupados.includes(codigo)) classe = 'ocupado';
+          else if (carrinho.assentos.includes(codigo)) classe = 'selecionado';
+          const desabilitado = ocupados.includes(codigo) ? 'disabled' : '';
+          html += `<button type="button" class="assento ${classe}" data-assento="${codigo}" title="${codigo}" ${desabilitado}>${n}</button>`;
+        }
+        html += '<span class="fileira-letra">' + letra + '</span></div>';
+      });
+
+      mapa.innerHTML = html;
+      atualizarResumo();
+    }
+
+    function alternarAssento(codigo) {
+      const lista = carrinho.assentos;
+      const posicao = lista.indexOf(codigo);
+
+      if (posicao >= 0) {
+        lista.splice(posicao, 1);
+      } else if (lista.length >= LIMITE_ASSENTOS) {
+        mostrarAviso('Você pode escolher até ' + LIMITE_ASSENTOS + ' assentos por compra.', 'warning');
+        return;
+      } else {
+        lista.push(codigo);
+      }
+
+      salvarCarrinho();
+      renderizarSala();
+    }
+
+    // ---------- Bomboniere ----------
+
+    function renderizarBomboniere() {
+      const categorias = ['Todas', ...new Set(dados.produtos.map(p => p.categoria))];
+      document.getElementById('filtros-categorias').innerHTML = categorias.map(c =>
+        `<button type="button" class="btn btn-sm ${c === categoriaProduto ? 'btn-warning' : 'btn-outline-light'}" data-categoria="${escapar(c)}">${escapar(c)}</button>`
+      ).join('');
+
+      const lista = dados.produtos.filter(p =>
+        p.ativo && (categoriaProduto === 'Todas' || p.categoria === categoriaProduto));
+
+      const area = document.getElementById('lista-produtos');
+      if (lista.length === 0) {
+        area.innerHTML = '<div class="col-12 text-secondary">Nenhum item disponível nesta categoria.</div>';
+      } else {
+        area.innerHTML = lista.map(p => {
+          const qtd = carrinho.itens[p.id] || 0;
+          const iconeCategoria = ICONES_CATEGORIA[p.categoria] || 'bag';
+          return `
+            <div class="col-sm-6 col-lg-4">
+              <div class="cartao cartao-elevado h-100">
+                <div class="card-body d-flex flex-column p-4">
+                  <div class="kpi-icone mb-3">${svgIcone(iconeCategoria)}</div>
+                  <span class="rotulo mb-1">${escapar(p.categoria)}</span>
+                  <h3 class="h6">${escapar(p.nome)}</h3>
+                  <p class="small text-secondary">${escapar(p.descricao)}</p>
+                  <div class="mt-auto pt-3 d-flex justify-content-between align-items-center">
+                    <strong class="text-warning">${formatarMoeda(p.preco)}</strong>
+                    <div class="d-flex align-items-center gap-2">
+                      <button type="button" class="btn btn-sm btn-outline-light" data-produto-id="${p.id}" data-delta="-1">${svgIcone('minus')}</button>
+                      <span class="fw-bold" style="min-width: 1.5rem; text-align: center;">${qtd}</span>
+                      <button type="button" class="btn btn-sm btn-outline-light" data-produto-id="${p.id}" data-delta="1">${svgIcone('plus')}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>`;
+        }).join('');
+      }
+      atualizarResumo();
+    }
+
+    function alterarQuantidade(id, delta) {
+      const nova = (carrinho.itens[id] || 0) + delta;
+      if (nova <= 0) delete carrinho.itens[id];
+      else carrinho.itens[id] = nova;
+      salvarCarrinho();
+      renderizarBomboniere();
+    }
+
+    // ---------- Resumo / Checkout ----------
+
+    function renderizarCheckout() {
+      const areaResumo = document.getElementById('area-resumo');
+      const areaComprovante = document.getElementById('area-comprovante');
+      const btnFinalizar = document.getElementById('btn-finalizar');
+
+      if (ultimoPedido) {
+        areaResumo.classList.add('d-none');
+        areaComprovante.classList.remove('d-none');
+        document.getElementById('comprovante-conteudo').innerHTML = htmlComprovante(ultimoPedido);
+        return;
+      }
+
+      areaResumo.classList.remove('d-none');
+      areaComprovante.classList.add('d-none');
+
+      const vazio = carrinho.assentos.length === 0 && quantidadeItens() === 0;
+      if (vazio) {
+        document.getElementById('resumo-conteudo').innerHTML = '<p class="text-secondary mb-0">Seu carrinho está vazio. Escolha um filme para começar.</p>';
+        document.getElementById('resumo-totais').innerHTML = '';
+        btnFinalizar.disabled = true;
+        return;
+      }
+
+      let html = '';
+      const sessao = sessaoAtual();
+
+      if (carrinho.assentos.length && sessao) {
+        const filme = dados.filmes.find(f => f.id === sessao.filmeId);
+        const tipoTexto = carrinho.tipo === 'meia' ? 'Meia-entrada' : 'Inteira';
+        html += `
+          <p class="rotulo mb-2">Ingressos</p>
+          <table class="table table-sm">
+            <tbody>
+              <tr><td>${escapar(filme.titulo)}<br><small class="text-secondary">Sala ${sessao.sala} · ${formatarData(sessao.data)} às ${sessao.hora}</small></td>
+                  <td>Assentos: ${[...carrinho.assentos].sort().join(', ')}</td></tr>
+              <tr><td>${carrinho.assentos.length} × ${tipoTexto}</td><td class="text-end">${formatarMoeda(totalIngressos())}</td></tr>
+            </tbody>
+          </table>`;
+      }
+
+      if (quantidadeItens() > 0) {
+        const linhas = Object.entries(carrinho.itens).map(([id, qtd]) => {
+          const p = dados.produtos.find(x => x.id === id);
+          return p ? `<tr><td>${qtd} × ${escapar(p.nome)}</td><td class="text-end">${formatarMoeda(p.preco * qtd)}</td></tr>` : '';
+        }).join('');
+        html += `<p class="rotulo mb-2 mt-4">Bomboniere</p><table class="table table-sm"><tbody>${linhas}</tbody></table>`;
+      }
+
+      document.getElementById('resumo-conteudo').innerHTML = html;
+      document.getElementById('resumo-totais').innerHTML = `
+        <p class="rotulo mb-3">Valores</p>
+        <div class="d-flex justify-content-between mb-2"><span class="text-secondary">Ingressos</span><span>${formatarMoeda(totalIngressos())}</span></div>
+        <div class="d-flex justify-content-between mb-2"><span class="text-secondary">Bomboniere</span><span>${formatarMoeda(totalItens())}</span></div>
+        <hr>
+        <div class="d-flex justify-content-between fw-bold fs-5"><span>Total</span><span class="text-warning">${formatarMoeda(totalIngressos() + totalItens())}</span></div>`;
+      btnFinalizar.disabled = false;
+    }
+
+    function finalizarCompra() {
+      const sessao = carrinho.assentos.length ? sessaoAtual() : null;
+
+      // Confere se alguém já ocupou os assentos enquanto o cliente escolhia
+      if (sessao) {
+        const ocupados = dados.ocupados[sessao.id] || [];
+        const conflito = carrinho.assentos.filter(a => ocupados.includes(a));
+        if (conflito.length) {
+          carrinho.assentos = carrinho.assentos.filter(a => !conflito.includes(a));
+          salvarCarrinho();
+          mostrarAviso('Os assentos ' + conflito.join(', ') + ' já foram ocupados. Escolha outros.', 'danger');
+          irPara('sala');
+          return;
+        }
+      }
+
+      const filme = sessao ? dados.filmes.find(f => f.id === sessao.filmeId) : null;
+      const pedido = {
+        codigo: 'CIN' + Date.now().toString(36).toUpperCase().slice(-5),
+        titular: login.nome,
+        filme: filme ? filme.titulo : 'Bomboniere',
+        detalhe: sessao ? `Sala ${sessao.sala} · ${formatarData(sessao.data)} às ${sessao.hora}` : 'Retirada na bomboniere',
+        assentos: [...carrinho.assentos].sort(),
+        itens: Object.entries(carrinho.itens).map(([id, qtd]) => {
+          const p = dados.produtos.find(x => x.id === id);
+          return { nome: p ? p.nome : 'Item removido', quantidade: qtd };
+        }),
+        total: totalIngressos() + totalItens(),
+        data: new Date().toLocaleDateString('pt-BR')
+      };
+
+      if (sessao) {
+        dados.ocupados[sessao.id] = [...(dados.ocupados[sessao.id] || []), ...carrinho.assentos];
+      }
+      dados.pedidos.push(pedido);
+      salvarDados();
+
+      carrinho = carrinhoVazio();
+      salvarCarrinho();
+
+      ultimoPedido = pedido;
+      mostrarAviso('Compra finalizada com sucesso!');
+      irPara('checkout');
+    }
+
+    function htmlComprovante(p) {
+      const itens = p.itens.length
+        ? p.itens.map(i => `<li>${i.quantidade} × ${escapar(i.nome)}</li>`).join('')
+        : '<li>Nenhum item</li>';
+      return `
+        <div class="d-flex justify-content-between align-items-start mb-3">
+          <div>
+            <p class="rotulo mb-1">Compra confirmada</p>
+            <h3 class="h4 mb-0">${escapar(p.filme)}</h3>
+          </div>
+          <span class="fs-2">${svgIcone('ticket')}</span>
+        </div>
+        <p class="mb-1 text-secondary small">${escapar(p.detalhe)}</p>
+        <p class="mb-1">Titular: <strong>${escapar(p.titular)}</strong></p>
+        ${p.assentos.length ? `<p class="mb-1">Assentos: <strong>${p.assentos.join(', ')}</strong></p>` : ''}
+        <ul class="small text-secondary mt-2">${itens}</ul>
+        <hr>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <span class="codigo">${escapar(p.codigo)}</span>
+          <strong class="fs-5 text-warning">${formatarMoeda(p.total)}</strong>
+        </div>
+        <p class="small text-secondary mb-3">Emitido em ${escapar(p.data)}</p>
+        <button class="btn btn-outline-light btn-sm" data-tela="filmes">${svgIcone('arrowLeft')} Voltar aos filmes</button>`;
+    }
+
+    // ---------- Meus ingressos ----------
+
+    function renderizarIngressos() {
+      const meus = dados.pedidos.filter(p => p.titular === login.nome).reverse();
+      const area = document.getElementById('lista-ingressos');
+      if (meus.length === 0) {
+        area.innerHTML = '<div class="col-12 text-secondary">Você ainda não tem compras.</div>';
+        return;
+      }
+      area.innerHTML = meus.map(p => `
+        <div class="col-md-6">
+          <div class="ingresso h-100">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+              <strong class="fs-5">${escapar(p.filme)}</strong>
+              <span class="codigo">${escapar(p.codigo)}</span>
+            </div>
+            <p class="small text-secondary mb-2">${escapar(p.detalhe)} · ${escapar(p.data)}</p>
+            ${p.assentos.length ? `<p class="small mb-2">Assentos: ${p.assentos.join(', ')}</p>` : ''}
+            <p class="mb-0 fw-bold text-warning">Total: ${formatarMoeda(p.total)}</p>
+          </div>
+        </div>`).join('');
+    }
+
+    // ---------- Painel Master ----------
+
+    function renderizarMaster() {
+      ['dashboard', 'filmes', 'sessoes', 'precos', 'produtos'].forEach(p => {
+        document.getElementById('painel-' + p).classList.toggle('d-none', p !== abaMaster);
+      });
+      document.querySelectorAll('#menu-master .nav-link').forEach(b => {
+        b.classList.toggle('active', b.dataset.aba === abaMaster);
+      });
+      renderizarDashboard();
+      renderizarTabelaFilmes();
+      renderizarTabelaSessoes();
+      renderizarTabelaProdutos();
+      preencherFormPrecos();
+    }
+
+    function renderizarDashboard() {
+      const vendidos = dados.pedidos.reduce((soma, p) => soma + p.assentos.length, 0);
+      const faturamento = dados.pedidos.reduce((soma, p) => soma + p.total, 0);
+      document.getElementById('dash-filmes').textContent = dados.filmes.filter(f => f.emCartaz).length;
+      document.getElementById('dash-ingressos').textContent = vendidos;
+      document.getElementById('dash-faturamento').textContent = formatarMoeda(faturamento);
+    }
+
+    function renderizarTabelaFilmes() {
+      document.getElementById('tabela-filmes').innerHTML = dados.filmes.map(f => `
+        <tr>
+          <td>${escapar(f.titulo)}</td>
+          <td>${escapar(f.genero)}</td>
+          <td>${f.duracao} min</td>
+          <td><span class="classificacao class-${escapar(f.classificacao)}">${escapar(f.classificacao)}</span></td>
+          <td><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" data-acao="toggle-filme" data-id="${f.id}" ${f.emCartaz ? 'checked' : ''}></div></td>
+          <td class="text-end text-nowrap">
+            <button class="btn btn-sm btn-outline-light me-1" data-acao="editar-filme" data-id="${f.id}" title="Editar">${svgIcone('pencil')}</button>
+            <button class="btn btn-sm btn-outline-danger" data-acao="excluir-filme" data-id="${f.id}" title="Excluir">${svgIcone('trash')}</button>
+          </td>
+        </tr>`).join('');
+    }
+
+    function renderizarTabelaSessoes() {
+      document.getElementById('sessao-filme').innerHTML = dados.filmes.map(f =>
+        `<option value="${f.id}">${escapar(f.titulo)}</option>`).join('');
+
+      document.getElementById('tabela-sessoes').innerHTML = [...dados.sessoes].sort(comparaSessoes).map(s => {
+        const filme = dados.filmes.find(f => f.id === s.filmeId);
+        const ocupados = (dados.ocupados[s.id] || []).length;
+        return `
+          <tr>
+            <td>${escapar(filme ? filme.titulo : '-')}</td>
+            <td>Sala ${s.sala}</td>
+            <td>${formatarData(s.data)} ${s.hora}</td>
+            <td>${ocupados}</td>
+            <td class="text-end text-nowrap">
+              <button class="btn btn-sm btn-outline-light me-1" data-acao="liberar-sessao" data-id="${s.id}">Liberar assentos</button>
+              <button class="btn btn-sm btn-outline-danger" data-acao="excluir-sessao" data-id="${s.id}" title="Excluir">${svgIcone('trash')}</button>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    function renderizarTabelaProdutos() {
+      document.getElementById('tabela-produtos').innerHTML = dados.produtos.map(p => `
+        <tr>
+          <td><input class="form-control form-control-sm" value="${escapar(p.nome)}" data-acao="produto-nome" data-id="${p.id}"></td>
+          <td>${escapar(p.categoria)}</td>
+          <td style="width: 110px;"><input type="number" step="0.5" min="0" class="form-control form-control-sm" value="${p.preco}" data-acao="produto-preco" data-id="${p.id}"></td>
+          <td><div class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" data-acao="produto-ativo" data-id="${p.id}" ${p.ativo ? 'checked' : ''}></div></td>
+          <td class="text-end"><button class="btn btn-sm btn-outline-danger" data-acao="excluir-produto" data-id="${p.id}" title="Excluir">${svgIcone('trash')}</button></td>
+        </tr>`).join('');
+    }
+
+    function preencherFormPrecos() {
+      document.getElementById('input-preco-inteira').value = dados.precos.inteira;
+      document.getElementById('input-preco-meia').value = dados.precos.meia;
+      document.getElementById('input-preco-auto').checked = dados.precos.meiaAutomatica;
+      document.getElementById('input-preco-meia').disabled = dados.precos.meiaAutomatica;
+    }
+
+    function preencherFormFilme(f) {
+      document.getElementById('filme-id').value = f.id;
+      document.getElementById('filme-titulo').value = f.titulo;
+      document.getElementById('filme-genero').value = f.genero;
+      document.getElementById('filme-duracao').value = f.duracao;
+      document.getElementById('filme-classificacao').value = f.classificacao;
+      document.getElementById('filme-sinopse').value = f.sinopse;
+      document.getElementById('filme-imagem').value = f.imagem || '';
+      document.getElementById('filme-form-titulo').textContent = 'Editar filme';
+      document.getElementById('btn-cancelar-filme').classList.remove('d-none');
+    }
+
+    function limparFormFilme() {
+      filmeEditando = null;
+      document.getElementById('form-filme').reset();
+      document.getElementById('filme-id').value = '';
+      document.getElementById('filme-form-titulo').textContent = 'Novo filme';
+      document.getElementById('btn-cancelar-filme').classList.add('d-none');
+    }
+
+    // ---------- Eventos ----------
+
+    function iniciarEventos() {
+      // Botões e links com data-tela trocam de tela
+      document.addEventListener('click', e => {
+        const el = e.target.closest('[data-tela]');
+        if (!el) return;
+        e.preventDefault();
+        irPara(el.dataset.tela);
+      });
+
+      document.getElementById('btn-sair').addEventListener('click', sair);
+      document.getElementById('btn-resetar').addEventListener('click', resetarBanco);
+
+      // Login
+      document.getElementById('aba-cliente').addEventListener('click', () => trocarAbaLogin('cliente'));
+      document.getElementById('aba-master').addEventListener('click', () => trocarAbaLogin('master'));
+      document.getElementById('btn-visitante').addEventListener('click', () => fazerLogin('Visitante', 'cliente'));
+
+      document.getElementById('form-cliente').addEventListener('submit', e => {
+        e.preventDefault();
+        const nome = document.getElementById('input-nome').value.trim();
+        const email = document.getElementById('input-email').value.trim();
+        if (nome.length < 2) return mostrarErroLogin('Digite um nome com pelo menos 2 letras.');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return mostrarErroLogin('Digite um e-mail válido.');
+        fazerLogin(nome, 'cliente');
+      });
+
+      document.getElementById('form-master').addEventListener('submit', e => {
+        e.preventDefault();
+        const usuario = document.getElementById('input-usuario').value.trim();
+        const senha = document.getElementById('input-senha').value;
+        if (usuario === 'admin' && senha === '1234') fazerLogin('Admin Master', 'master');
+        else mostrarErroLogin('Usuário ou senha incorretos.');
+      });
+
+      // Sala
+      document.getElementById('mapa-assentos').addEventListener('click', e => {
+        const botao = e.target.closest('[data-assento]');
+        if (!botao || botao.disabled) return;
+        alternarAssento(botao.dataset.assento);
+      });
+
+      document.getElementById('radio-inteira').addEventListener('change', () => {
+        carrinho.tipo = 'inteira'; salvarCarrinho(); atualizarResumo();
+      });
+      document.getElementById('radio-meia').addEventListener('change', () => {
+        carrinho.tipo = 'meia'; salvarCarrinho(); atualizarResumo();
+      });
+      document.getElementById('btn-limpar-assentos').addEventListener('click', () => {
+        carrinho.assentos = [];
+        salvarCarrinho();
+        renderizarSala();
+      });
+
+      // Lista de filmes: escolher um horário abre a sala
+      document.getElementById('lista-filmes').addEventListener('click', e => {
+        const botao = e.target.closest('[data-sessao-id]');
+        if (botao) abrirSala(botao.dataset.sessaoId);
+      });
+
+      // Bomboniere
+      document.getElementById('filtros-categorias').addEventListener('click', e => {
+        const botao = e.target.closest('[data-categoria]');
+        if (!botao) return;
+        categoriaProduto = botao.dataset.categoria;
+        renderizarBomboniere();
+      });
+      document.getElementById('lista-produtos').addEventListener('click', e => {
+        const botao = e.target.closest('[data-produto-id]');
+        if (botao) alterarQuantidade(botao.dataset.produtoId, Number(botao.dataset.delta));
+      });
+
+      // Checkout
+      document.getElementById('btn-finalizar').addEventListener('click', finalizarCompra);
+
+      // Painel Master: ações dos botões
+      document.getElementById('tela-master').addEventListener('click', e => {
+        const alvo = e.target.closest('[data-acao]');
+        if (!alvo || alvo.tagName === 'INPUT') return;
+        const acao = alvo.dataset.acao;
+        const id = alvo.dataset.id;
+
+        if (acao === 'aba') {
+          abaMaster = alvo.dataset.aba;
+          renderizarMaster();
+        }
+
+        if (acao === 'editar-filme') {
+          const f = dados.filmes.find(x => x.id === id);
+          filmeEditando = id;
+          preencherFormFilme(f);
+        }
+
+        if (acao === 'excluir-filme' && confirm('Excluir este filme e as suas sessões?')) {
+          const sessoesDoFilme = dados.sessoes.filter(s => s.filmeId === id).map(s => s.id);
+          dados.filmes = dados.filmes.filter(f => f.id !== id);
+          dados.sessoes = dados.sessoes.filter(s => s.filmeId !== id);
+          sessoesDoFilme.forEach(sid => delete dados.ocupados[sid]);
+          if (filmeEditando === id) limparFormFilme();
+          salvarDados();
+          renderizarMaster();
+          mostrarAviso('Filme excluído.', 'secondary');
+        }
+
+        if (acao === 'excluir-sessao' && confirm('Excluir esta sessão?')) {
+          dados.sessoes = dados.sessoes.filter(s => s.id !== id);
+          delete dados.ocupados[id];
+          salvarDados();
+          renderizarMaster();
+        }
+
+        if (acao === 'liberar-sessao') {
+          delete dados.ocupados[id];
+          salvarDados();
+          renderizarMaster();
+          mostrarAviso('Assentos liberados.');
+        }
+
+        if (acao === 'excluir-produto' && confirm('Excluir este produto?')) {
+          dados.produtos = dados.produtos.filter(p => p.id !== id);
+          salvarDados();
+          renderizarMaster();
+        }
+      });
+
+      // Painel Master: mudanças nos campos (switches e inputs das tabelas)
+      document.getElementById('tela-master').addEventListener('change', e => {
+        const alvo = e.target.closest('[data-acao]');
+        if (!alvo) return;
+        const acao = alvo.dataset.acao;
+        const id = alvo.dataset.id;
+
+        if (acao === 'toggle-filme') {
+          dados.filmes.find(f => f.id === id).emCartaz = alvo.checked;
+        }
+        if (acao === 'produto-nome') {
+          const p = dados.produtos.find(x => x.id === id);
+          p.nome = alvo.value.trim() || p.nome;
+        }
+        if (acao === 'produto-preco') {
+          dados.produtos.find(x => x.id === id).preco = Math.max(0, Number(alvo.value) || 0);
+        }
+        if (acao === 'produto-ativo') {
+          dados.produtos.find(x => x.id === id).ativo = alvo.checked;
+        }
+
+        salvarDados();
+        renderizarMaster();
+      });
+
+      // Formulário de filme (novo ou edição)
+      document.getElementById('form-filme').addEventListener('submit', e => {
+        e.preventDefault();
+        const titulo = document.getElementById('filme-titulo').value.trim();
+        if (!titulo) return mostrarAviso('Informe o título do filme.', 'danger');
+
+        const dadosFilme = {
+          titulo: titulo,
+          genero: document.getElementById('filme-genero').value.trim(),
+          duracao: Number(document.getElementById('filme-duracao').value) || 1,
+          classificacao: document.getElementById('filme-classificacao').value,
+          sinopse: document.getElementById('filme-sinopse').value.trim(),
+          imagem: document.getElementById('filme-imagem').value.trim() || IMAGEM_PADRAO
+        };
+
+        if (filmeEditando) {
+          Object.assign(dados.filmes.find(f => f.id === filmeEditando), dadosFilme);
+          mostrarAviso('Filme atualizado.');
+        } else {
+          dados.filmes.push({
+            id: novoId(), ...dadosFilme,
+            cor: CORES_POSTER[dados.filmes.length % CORES_POSTER.length],
+            emCartaz: true
+          });
+          mostrarAviso('Filme cadastrado.');
+        }
+
+        salvarDados();
+        limparFormFilme();
+        renderizarMaster();
+      });
+
+      document.getElementById('btn-cancelar-filme').addEventListener('click', limparFormFilme);
+
+      // Formulário de sessão
+      document.getElementById('form-sessao').addEventListener('submit', e => {
+        e.preventDefault();
+        dados.sessoes.push({
+          id: novoId(),
+          filmeId: document.getElementById('sessao-filme').value,
+          sala: Number(document.getElementById('sessao-sala').value),
+          data: document.getElementById('sessao-data').value,
+          hora: document.getElementById('sessao-hora').value
+        });
+        salvarDados();
+        renderizarMaster();
+        mostrarAviso('Sessão adicionada.');
+      });
+
+      // Formulário de preços
+      document.getElementById('input-preco-auto').addEventListener('change', () => {
+        document.getElementById('input-preco-meia').disabled = document.getElementById('input-preco-auto').checked;
+      });
+
+      document.getElementById('form-precos').addEventListener('submit', e => {
+        e.preventDefault();
+        const inteira = Math.max(0, Number(document.getElementById('input-preco-inteira').value) || 0);
+        const automatica = document.getElementById('input-preco-auto').checked;
+        const meia = automatica
+          ? Math.round(inteira * 50) / 100
+          : Math.max(0, Number(document.getElementById('input-preco-meia').value) || 0);
+        dados.precos = { inteira: inteira, meia: meia, meiaAutomatica: automatica };
+        salvarDados();
+        renderizarMaster();
+        mostrarAviso('Preços atualizados.');
+      });
+
+      // Formulário de produto
+      document.getElementById('form-produto').addEventListener('submit', e => {
+        e.preventDefault();
+        const nome = document.getElementById('prod-nome').value.trim();
+        if (!nome) return mostrarAviso('Informe o nome do produto.', 'danger');
+        dados.produtos.push({
+          id: novoId(),
+          categoria: document.getElementById('prod-categoria').value.trim() || 'Outros',
+          nome: nome,
+          descricao: document.getElementById('prod-descricao').value.trim(),
+          preco: Math.max(0, Number(document.getElementById('prod-preco').value) || 0),
+          ativo: true
+        });
+        e.target.reset();
+        salvarDados();
+        renderizarMaster();
+        mostrarAviso('Produto cadastrado.');
+      });
+    }
+
+    // ---------- Início ----------
+
+    dados = carregarDados();
+    login = carregarLogin();
+    carrinho = carregarCarrinho();
+    salvarDados();
+    iniciarEventos();
+    hidratarIcones();
+
+    if (login) irPara(login.perfil === 'master' ? 'master' : 'filmes');
+    else irPara('login');
+  </script>
 </body>
 </html>
